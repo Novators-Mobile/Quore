@@ -4,14 +4,15 @@ import { Home } from './Home';
 import { SignUpScreen } from './SignUpScreen';
 import { SignInScreen } from './SignInScreen';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 const globalScreenOptions = {
-  headerStyle: { backgroundColor: '#2C6BED' },
-  headerTitleStyle: { color: 'white' },
-  headerTintColor: 'white',
+  headerShown: false,
+  contentStyle: {
+    backgroundColor: '#232325',
+  },
 };
 
 export const Navigation = () => {
@@ -22,6 +23,7 @@ export const Navigation = () => {
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
         <Stack.Screen name="SignInScreen" component={SignInScreen} />
       </Stack.Navigator>
+      <StatusBar style="auto" />
     </NavigationContainer>
   );
 };
