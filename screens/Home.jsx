@@ -2,19 +2,30 @@ import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
+import { Txt } from './SignUpScreen';
 
 export const Home = ({ navigation }) => {
   const [appIsReady, setAppIsReady] = useState(false);
 
   const [isPress, setIsPress] = useState(false);
 
+  const [isClick, setIsClick] = useState(false);
+
   const touchProps = {
     activeOpacity: 1,
-    underlayColor: 'grey', // <-- "backgroundColor" will be always overwritten by "underlayColor"
-    style: isPress ? styles.btnPress : styles.btnNormal, // <-- but you can still apply other style changes
+    underlayColor: '#D9D9D9', // <-- "backgroundColor" will be always overwritten by "underlayColor"
+    style: isPress ? styles.btnPress : styles.button,
     onHideUnderlay: () => setIsPress(false),
     onShowUnderlay: () => setIsPress(true),
     onPress: () => {}, // <-- "onPress" is apparently required
+  };
+
+  const clickProps = {
+    activeOpacity: 1,
+    underlayColor: '#D9D9D9',
+    style: isClick ? { color: '#313131' } : {},
+    onHideUnderlay: () => setIsClick(false),
+    onShowUnderlay: () => setIsClick(true),
   };
 
   useEffect(() => {
@@ -56,32 +67,30 @@ export const Home = ({ navigation }) => {
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={{ marginTop: 200 }}>
-      <View style={{ marginBottom: 200 }}>
+    <View onLayout={onLayoutRootView} style={styles.container}>
+      <View style={styles.mainTitle}>
         <Text style={styles.title}>QUORE</Text>
       </View>
 
       <View style={styles.buttonContainer}>
-        <Text style={{ width: 234, fontSize: 15, color: '#ffffff' }}>
+        <Text style={styles.text}>
           Создайте новый аккаунт или войдите, чтобы продолжить.
         </Text>
 
         <TouchableHighlight
-          {...touchProps}
+          {...clickProps}
           style={styles.button}
           onPress={() => navigation.navigate('SignUpScreen')}
         >
-          <Text style={{ textAlign: 'center', color: '#ffffff' }}>
-            Создать аккаунт
-          </Text>
+          <Txt {...clickProps}>Создать аккаунт</Txt>
         </TouchableHighlight>
 
         <TouchableHighlight
-          {...touchProps}
+          {...clickProps}
           style={styles.button}
           onPress={() => navigation.navigate('SignInScreen')}
         >
-          <Text style={{ textAlign: 'center', color: '#ffffff' }}>Войти</Text>
+          <Txt {...clickProps}>Войти</Txt>
         </TouchableHighlight>
       </View>
     </View>
@@ -89,6 +98,9 @@ export const Home = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 220,
+  },
   buttonContainer: {
     gap: 20,
     marginTop: 30,
@@ -97,25 +109,21 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 16,
     fontFamily: 'ubuntu-regular',
-    color: '#ffffff',
     backgroundColor: '#313131',
     width: 306,
     borderRadius: 28,
     paddingBottom: 12,
     paddingTop: 12,
   },
-  btnNormal: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 10,
-    height: 30,
-    width: 100,
-  },
   btnPress: {
-    borderColor: 'black',
-    borderWidth: 1,
-    height: 30,
-    width: 100,
+    fontSize: 16,
+    fontFamily: 'ubuntu-regular',
+    color: '#000000',
+    backgroundColor: '#313131',
+    width: 306,
+    borderRadius: 28,
+    paddingBottom: 12,
+    paddingTop: 12,
   },
   title: {
     color: '#ffffff',
@@ -125,5 +133,13 @@ const styles = StyleSheet.create({
     fontSize: 80,
     fontStyle: 'italic',
     fontWeight: 'bold',
+  },
+  text: {
+    width: 234,
+    fontSize: 15,
+    color: '#ffffff',
+  },
+  mainTitle: {
+    marginBottom: 200,
   },
 });

@@ -1,51 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  TouchableHighlight,
-  StyleSheet,
-} from 'react-native';
-import styled from 'styled-components/native';
+import { View, TouchableHighlight, StyleSheet } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-
-const Title = styled.Text`
-  font-size: 28px;
-  font-weight: 500;
-  color: #ffffff;
-  font-family: ubuntu-regular;
-  margin-bottom: 30px;
-`;
-
-const Input = styled.TextInput`
-  width: 378px;
-  color: #ffffff;
-`;
-
-const Form = styled.View`
-  flex-direction: row;
-  align-items: center;
-  width: 378px;
-  height: 48px;
-  border: 1px solid #ffffff;
-  border-radius: 25px;
-  color: #ffffff;
-  padding: 14px;
-  margin-bottom: 16px;
-  position: relative;
-`;
-
-const ButtonContainer = styled.View`
-  gap: 20px;
-  margin-top: 190px;
-  align-items: center;
-`;
-
-const FullForm = styled.View`
-  margin-top: 130px;
-`;
+import { Title, Txt, Link, Input, Form, FullForm, Img } from './SignUpScreen';
 
 export const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -103,24 +60,13 @@ export const SignInScreen = ({ navigation }) => {
   }
 
   return (
-    <View
-      onLayout={onLayoutRootView}
-      style={{ marginTop: 150, justifyContent: 'center', alignItems: 'center' }}
-    >
+    <View onLayout={onLayoutRootView} style={styles.container}>
       <Title>Войти в аккаунт</Title>
       <FullForm>
         <Form>
-          <Image
+          <Img
             source={{
               uri: 'https://i.ibb.co/jynh385/Vector.png',
-            }}
-            style={{
-              padding: 10,
-              marginRight: 15,
-              height: 25,
-              width: 25,
-              resizeMode: 'stretch',
-              alignItems: 'center',
             }}
           />
           <Input
@@ -132,16 +78,9 @@ export const SignInScreen = ({ navigation }) => {
           />
         </Form>
         <Form>
-          <Image
+          <Img
             source={{
               uri: 'https://i.ibb.co/mRw4zj4/Key.png',
-            }}
-            style={{
-              marginRight: 15,
-              height: 15,
-              width: 25,
-              resizeMode: 'stretch',
-              alignItems: 'center',
             }}
           />
           <Input
@@ -153,61 +92,49 @@ export const SignInScreen = ({ navigation }) => {
           />
         </Form>
       </FullForm>
-      <ButtonContainer>
-        <TouchableHighlight
-          {...touchProps}
-          style={{
-            fontSize: 15,
-            color: '#ffffff',
-            backgroundColor: '#DEDED61A',
-            width: 378,
-            borderRadius: 28,
-            paddingBottom: 12,
-            paddingTop: 12,
-            borderWidth: 4,
-            borderColor: '#313131',
-          }}
-        >
-          <Text style={{ textAlign: 'center', color: '#ffffff' }}>
-            Начать общение
-          </Text>
+      <View style={styles.buttonContainer}>
+        <TouchableHighlight {...touchProps} style={styles.button}>
+          <Txt>Начать общение</Txt>
         </TouchableHighlight>
 
         <TouchableHighlight
           {...touchProps}
-          style={{
-            fontSize: 15,
-            color: '#ffffff',
-            width: 378,
-            paddingBottom: 12,
-            paddingTop: 12,
-          }}
+          style={styles.linkButton}
           onPress={() => navigation.navigate('SignUpScreen')}
         >
-          <Text
-            style={{ textAlign: 'center', color: '#ffffff', marginTop: 20 }}
-          >
-            Нужно создать новый аккаунт?
-          </Text>
+          <Link>Нужно создать новый аккаунт?</Link>
         </TouchableHighlight>
-      </ButtonContainer>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonContainer: {
     gap: 20,
-    marginTop: 30,
+    marginTop: 235,
     alignItems: 'center',
   },
   button: {
-    fontSize: 16,
-    fontFamily: 'ubuntu-regular',
+    fontSize: 15,
     color: '#ffffff',
-    backgroundColor: '#313131',
-    width: 306,
+    backgroundColor: '#DEDED61A',
+    width: 378,
     borderRadius: 28,
+    paddingBottom: 12,
+    paddingTop: 12,
+    borderWidth: 4,
+    borderColor: '#313131',
+  },
+  linkButton: {
+    fontSize: 15,
+    color: '#ffffff',
+    width: 378,
     paddingBottom: 12,
     paddingTop: 12,
   },
@@ -223,14 +150,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 30,
     width: 100,
-  },
-  title: {
-    color: '#ffffff',
-    fontFamily: 'ubuntu-regular',
-    fontWeight: 500,
-    textAlign: 'center',
-    fontSize: 80,
-    fontStyle: 'italic',
-    fontWeight: 'bold',
   },
 });
