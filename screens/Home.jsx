@@ -9,23 +9,12 @@ export const Home = ({ navigation }) => {
 
   const [isPress, setIsPress] = useState(false);
 
-  const [isClick, setIsClick] = useState(false);
-
   const touchProps = {
     activeOpacity: 1,
     underlayColor: '#D9D9D9', // <-- "backgroundColor" will be always overwritten by "underlayColor"
     style: isPress ? styles.btnPress : styles.button,
     onHideUnderlay: () => setIsPress(false),
     onShowUnderlay: () => setIsPress(true),
-    onPress: () => {}, // <-- "onPress" is apparently required
-  };
-
-  const clickProps = {
-    activeOpacity: 1,
-    underlayColor: '#D9D9D9',
-    style: isClick ? { color: '#313131' } : {},
-    onHideUnderlay: () => setIsClick(false),
-    onShowUnderlay: () => setIsClick(true),
   };
 
   useEffect(() => {
@@ -78,19 +67,19 @@ export const Home = ({ navigation }) => {
         </Text>
 
         <TouchableHighlight
-          {...clickProps}
+          {...touchProps}
           style={styles.button}
           onPress={() => navigation.navigate('SignUpScreen')}
         >
-          <Txt {...clickProps}>Создать аккаунт</Txt>
+          <Txt>Создать аккаунт</Txt>
         </TouchableHighlight>
 
         <TouchableHighlight
-          {...clickProps}
+          {...touchProps}
           style={styles.button}
           onPress={() => navigation.navigate('SignInScreen')}
         >
-          <Txt {...clickProps}>Войти</Txt>
+          <Txt>Войти</Txt>
         </TouchableHighlight>
       </View>
     </View>
