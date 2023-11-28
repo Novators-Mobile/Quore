@@ -12,6 +12,7 @@ import {
   createDrawerNavigator,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { SvgUri } from 'react-native-svg';
 
 import * as Font from 'expo-font';
 
@@ -53,133 +54,134 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        drawerContent={(props) => {
-          return (
-            <SafeAreaView>
-              <View
-                style={{
-                  height: 100,
-                  width: '100%',
-                  justifyContent: 'center',
-                  paddingLeft: 23,
-                  borderBottomColor: '#f4f4f4',
-                  borderBottomWidth: 1,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 22,
-                    marginVertical: 6,
-                    // fontFamily: 'source-serif-medium-italic',
-                    color: '#fff',
-                  }}
-                >
-                  QUORE
-                </Text>
-              </View>
-              <DrawerItemList {...props} />
-            </SafeAreaView>
-          );
-        }}
-        screenOptions={{
-          drawerStyle: {
-            backgroundColor: '#232325',
-            width: 250,
-          },
+    <Navigation></Navigation>
+    // <NavigationContainer>
+    //   <Drawer.Navigator
+    //     drawerContent={(props) => {
+    //       return (
+    //         <SafeAreaView>
+    //           <View
+    //             style={{
+    //               height: 100,
+    //               width: '100%',
+    //               justifyContent: 'center',
+    //               paddingLeft: 23,
+    //               borderBottomColor: '#f4f4f4',
+    //               borderBottomWidth: 1,
+    //             }}
+    //           >
+    //             <Text
+    //               style={{
+    //                 fontSize: 22,
+    //                 marginVertical: 6,
+    //                 // fontFamily: 'source-serif-medium-italic',
+    //                 color: '#fff',
+    //               }}
+    //             >
+    //               QUORE
+    //             </Text>
+    //           </View>
+    //           <DrawerItemList {...props} />
+    //         </SafeAreaView>
+    //       );
+    //     }}
+    //     screenOptions={{
+    //       drawerStyle: {
+    //         backgroundColor: '#232325',
+    //         width: 250,
+    //       },
 
-          drawerLabelStyle: {
-            color: '#6E6E6E',
-          },
-          drawerActiveTintColor: '#fff',
-        }}
-        initialRouteName="Recommendations"
-      >
-        <Drawer.Screen
-          name="Recommendations"
-          options={{
-            headerShown: false,
-            drawerLabel: 'Рекомендации',
-            title: 'Рекомендации',
-            drawerIcon: () => (
-              <SimpleLineIcons name="home" size={20} color="#808080" />
-            ),
-          }}
-          component={Recommendations}
-        />
-        <Drawer.Screen
-          name="Chats"
-          options={{
-            drawerLabel: 'Чаты',
-            title: 'Чаты',
-            drawerIcon: () => (
-              <MaterialIcons name="chat" size={20} color="#808080" />
-            ),
-          }}
-          component={Chats}
-        />
-        <Drawer.Screen
-          name="Likes"
-          options={{
-            drawerLabel: 'Лайки',
-            title: 'Лайки',
-            drawerIcon: () => (
-              <FontAwesome name="heart" size={20} color="#808080" />
-            ),
-          }}
-          component={Likes}
-        />
-        <Drawer.Screen
-          name="Events"
-          options={{
-            drawerLabel: 'Мои мероприятия',
-            title: 'Мои мероприятия',
-            drawerIcon: () => (
-              <MaterialCommunityIcons
-                name="calendar"
-                size={20}
-                color="#808080"
-              />
-            ),
-          }}
-          component={Events}
-        />
-        <Drawer.Screen
-          name="Profile"
-          options={{
-            headerShown: false,
-            drawerLabel: 'Профиль',
-            title: 'Профиль',
-            drawerIcon: () => (
-              <FontAwesome name="user" size={20} color="#808080" />
-            ),
-          }}
-          component={Profile}
-        />
-        <Drawer.Screen
-          name="Notifications"
-          options={{
-            drawerLabel: 'Уведомления',
-            title: 'Уведомления',
-            drawerIcon: () => (
-              <MaterialIcons name="notifications" size={20} color="#808080" />
-            ),
-          }}
-          component={Notifications}
-        />
-        <Drawer.Screen
-          name="Settings"
-          options={{
-            drawerLabel: 'Настройки',
-            title: 'Настройки',
-            drawerIcon: () => (
-              <SimpleLineIcons name="settings" size={20} color="#808080" />
-            ),
-          }}
-          component={Settings}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    //       drawerLabelStyle: {
+    //         color: '#6E6E6E',
+    //       },
+    //       drawerActiveTintColor: '#fff',
+    //     }}
+    //     initialRouteName="Recommendations"
+    //   >
+    //     <Drawer.Screen
+    //       name="Recommendations"
+    //       options={{
+    //         headerShown: false,
+    //         drawerLabel: 'Рекомендации',
+    //         title: 'Рекомендации',
+    //         drawerIcon: () => (
+    //           <SimpleLineIcons name="home" size={20} color="#808080" />
+    //         ),
+    //       }}
+    //       component={Recommendations}
+    //     />
+    //     <Drawer.Screen
+    //       name="Chats"
+    //       options={{
+    //         drawerLabel: 'Чаты',
+    //         title: 'Чаты',
+    //         drawerIcon: () => (
+    //           <MaterialIcons name="chat" size={20} color="#808080" />
+    //         ),
+    //       }}
+    //       component={Chats}
+    //     />
+    //     <Drawer.Screen
+    //       name="Likes"
+    //       options={{
+    //         drawerLabel: 'Лайки',
+    //         title: 'Лайки',
+    //         drawerIcon: () => (
+    //           <FontAwesome name="heart" size={20} color="#808080" />
+    //         ),
+    //       }}
+    //       component={Likes}
+    //     />
+    //     <Drawer.Screen
+    //       name="Events"
+    //       options={{
+    //         drawerLabel: 'Мои мероприятия',
+    //         title: 'Мои мероприятия',
+    //         drawerIcon: () => (
+    //           <MaterialCommunityIcons
+    //             name="calendar"
+    //             size={20}
+    //             color="#808080"
+    //           />
+    //         ),
+    //       }}
+    //       component={Events}
+    //     />
+    //     <Drawer.Screen
+    //       name="Profile"
+    //       options={{
+    //         headerShown: false,
+    //         drawerLabel: 'Профиль',
+    //         title: 'Профиль',
+    //         drawerIcon: () => (
+    //           <FontAwesome name="user" size={20} color="#808080" />
+    //         ),
+    //       }}
+    //       component={Profile}
+    //     />
+    //     <Drawer.Screen
+    //       name="Notifications"
+    //       options={{
+    //         drawerLabel: 'Уведомления',
+    //         title: 'Уведомления',
+    //         drawerIcon: () => (
+    //           <MaterialIcons name="notifications" size={20} color="#808080" />
+    //         ),
+    //       }}
+    //       component={Notifications}
+    //     />
+    //     <Drawer.Screen
+    //       name="Settings"
+    //       options={{
+    //         drawerLabel: 'Настройки',
+    //         title: 'Настройки',
+    //         drawerIcon: () => (
+    //           <SimpleLineIcons name="settings" size={20} color="#808080" />
+    //         ),
+    //       }}
+    //       component={Settings}
+    //     />
+    //   </Drawer.Navigator>
+    // </NavigationContainer>
   );
 }

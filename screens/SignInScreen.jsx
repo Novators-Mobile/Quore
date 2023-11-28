@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import { View, TouchableHighlight, StyleSheet } from 'react-native';
-import { Title, Txt, Link, Input, Form, FullForm, Img } from './SignUpScreen';
+import {
+  Title,
+  Txt,
+  Link,
+  Input,
+  Form,
+  FullForm,
+  emailXml,
+  passwordXml,
+} from './SignUpScreen';
+import { SvgXml } from 'react-native-svg';
 
 export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
   const [email, setEmail] = useState('');
@@ -11,11 +21,7 @@ export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
       <Title>Войти в аккаунт</Title>
       <FullForm>
         <Form>
-          <Img
-            source={{
-              uri: 'https://i.ibb.co/jynh385/Vector.png',
-            }}
-          />
+          <SvgXml xml={emailXml} width="20px" height="20px" />
           <Input
             placeholder="Ваша почта"
             placeholderTextColor="#ffffff"
@@ -25,11 +31,7 @@ export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
           />
         </Form>
         <Form>
-          <Img
-            source={{
-              uri: 'https://i.ibb.co/mRw4zj4/Key.png',
-            }}
-          />
+          <SvgXml xml={passwordXml} width="20px" height="20px" />
           <Input
             placeholder="Введите пароль"
             placeholderTextColor="#ffffff"
