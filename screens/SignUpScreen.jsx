@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View, TouchableHighlight, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { SvgXml } from 'react-native-svg';
 
@@ -14,6 +13,32 @@ export const emailXml = `<svg xmlns="http://www.w3.org/2000/svg" width="18" heig
 export const passwordXml = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12" viewBox="0 0 20 12" fill="none">
 <path d="M17.5 11.1429H12.5V8.57143H11.0833C10.1667 10.6286 8.08333 12 5.83333 12C2.58333 12 0 9.34286 0 6C0 2.65714 2.58333 0 5.83333 0C8.08333 0 10.1667 1.37143 11.0833 3.42857H20V8.57143H17.5V11.1429ZM14.1667 9.42857H15.8333V6.85714H18.3333V5.14286H9.91667L9.75 4.54286C9.16667 2.82857 7.58333 1.71429 5.83333 1.71429C3.5 1.71429 1.66667 3.6 1.66667 6C1.66667 8.4 3.5 10.2857 5.83333 10.2857C7.58333 10.2857 9.16667 9.17143 9.75 7.45714L9.91667 6.85714H14.1667V9.42857ZM5.83333 8.57143C4.41667 8.57143 3.33333 7.45714 3.33333 6C3.33333 4.54286 4.41667 3.42857 5.83333 3.42857C7.25 3.42857 8.33333 4.54286 8.33333 6C8.33333 7.45714 7.25 8.57143 5.83333 8.57143ZM5.83333 5.14286C5.33333 5.14286 5 5.48571 5 6C5 6.51429 5.33333 6.85714 5.83333 6.85714C6.33333 6.85714 6.66667 6.51429 6.66667 6C6.66667 5.48571 6.33333 5.14286 5.83333 5.14286Z" fill="white"/>
 </svg>`;
+
+const Container = styled.View`
+  margin-top: 120px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Button = styled.TouchableHighlight`
+  font-size: 15px;
+  color: #ffffff;
+  background-color: #deded61a;
+  width: 378px;
+  border-radius: 28px;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  border-width: 4px;
+  border-color: #313131;
+`;
+
+export const LinkBtn = styled.TouchableHighlight`
+  font-size: 15px;
+  color: #ffffff;
+  width: 378px;
+  padding-bottom: 12px;
+  padding-top: 12px;
+`;
 
 export const Title = styled.Text`
   font-size: 28px;
@@ -53,7 +78,7 @@ export const Form = styled.View`
   gap: 14px;
 `;
 
-const ButtonContainer = styled.View`
+export const ButtonContainer = styled.View`
   gap: 20px;
   margin-top: 135px;
   align-items: center;
@@ -78,7 +103,7 @@ export const SignUpScreen = ({ onLayoutRootView, touchProps, navigation }) => {
   const [password, setPassword] = useState('');
 
   return (
-    <View onLayout={onLayoutRootView} style={styles.container}>
+    <Container onLayout={onLayoutRootView}>
       <Title>Создание аккаунта</Title>
       <FullForm>
         <Form>
@@ -123,57 +148,17 @@ export const SignUpScreen = ({ onLayoutRootView, touchProps, navigation }) => {
         </Form>
       </FullForm>
       <ButtonContainer>
-        <TouchableHighlight {...touchProps} style={styles.button}>
+        <Button {...touchProps}>
           <Txt>Зарегистрироваться</Txt>
-        </TouchableHighlight>
+        </Button>
 
-        <TouchableHighlight
+        <LinkBtn
           {...touchProps}
-          style={styles.linkButton}
           onPress={() => navigation.navigate('SignInScreen')}
         >
           <Link>У Вас уже есть аккаунт?</Link>
-        </TouchableHighlight>
+        </LinkBtn>
       </ButtonContainer>
-    </View>
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 120,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    fontSize: 15,
-    color: '#ffffff',
-    backgroundColor: '#DEDED61A',
-    width: 378,
-    borderRadius: 28,
-    paddingBottom: 12,
-    paddingTop: 12,
-    borderWidth: 4,
-    borderColor: '#313131',
-  },
-  linkButton: {
-    fontSize: 15,
-    color: '#ffffff',
-    width: 378,
-    paddingBottom: 12,
-    paddingTop: 12,
-  },
-  btnNormal: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 10,
-    height: 30,
-    width: 100,
-  },
-  btnPress: {
-    borderColor: 'black',
-    borderWidth: 1,
-    height: 30,
-    width: 100,
-  },
-});

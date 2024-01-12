@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View, TouchableHighlight, StyleSheet } from 'react-native';
 import {
   Title,
   Txt,
@@ -9,15 +8,25 @@ import {
   FullForm,
   emailXml,
   passwordXml,
+  Button,
+  LinkBtn,
+  ButtonContainer,
 } from './SignUpScreen';
 import { SvgXml } from 'react-native-svg';
+import styled from 'styled-components/native';
+
+const Container = styled.View`
+  margin-top: 150px;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
-    <View onLayout={onLayoutRootView} style={styles.container}>
+    <Container onLayout={onLayoutRootView}>
       <Title>Войти в аккаунт</Title>
       <FullForm>
         <Form>
@@ -41,63 +50,18 @@ export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
           />
         </Form>
       </FullForm>
-      <View style={styles.buttonContainer}>
-        <TouchableHighlight {...touchProps} style={styles.button}>
+      <ButtonContainer>
+        <Button {...touchProps}>
           <Txt>Начать общение</Txt>
-        </TouchableHighlight>
+        </Button>
 
-        <TouchableHighlight
+        <LinkBtn
           {...touchProps}
-          style={styles.linkButton}
           onPress={() => navigation.navigate('SignUpScreen')}
         >
           <Link>Нужно создать новый аккаунт?</Link>
-        </TouchableHighlight>
-      </View>
-    </View>
+        </LinkBtn>
+      </ButtonContainer>
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    gap: 20,
-    marginTop: 235,
-    alignItems: 'center',
-  },
-  button: {
-    fontSize: 15,
-    color: '#ffffff',
-    backgroundColor: '#DEDED61A',
-    width: 378,
-    borderRadius: 28,
-    paddingBottom: 12,
-    paddingTop: 12,
-    borderWidth: 4,
-    borderColor: '#313131',
-  },
-  linkButton: {
-    fontSize: 15,
-    color: '#ffffff',
-    width: 378,
-    paddingBottom: 12,
-    paddingTop: 12,
-  },
-  btnNormal: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 10,
-    height: 30,
-    width: 100,
-  },
-  btnPress: {
-    borderColor: 'black',
-    borderWidth: 1,
-    height: 30,
-    width: 100,
-  },
-});
