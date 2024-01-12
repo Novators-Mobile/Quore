@@ -232,9 +232,13 @@
 
 import React from 'react';
 
+import { FlatList, RefreshControl, Image, View } from 'react-native';
+
 import { navBtn } from './Recommendations';
 import Svg, { SvgXml } from 'react-native-svg';
 import { styled } from 'styled-components';
+
+import axios from 'axios';
 
 import { Container, Button } from './Recommendations';
 
@@ -255,29 +259,20 @@ const Change = styled.Text`
 const Main = styled.View`
   margin-top: 20px;
   align-items: center;
-  gap: 6px;
-  width: 90%;
-  height: 50%;
+  width: 100%;
+  height: 80%;
 `;
 
 const Img = styled.Image`
-  margin-right: 15px;
   width: 25%;
   height: 25%;
   resize-mode: stretch;
   align-items: center;
 `;
 
-const Name = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  color: white;
-`;
-
-const Location = styled.Text`
-  color: #c3c0c0;
-  width: 182px;
-  text-align: center;
+const ImgBlock = styled.View`
+  width: 100%;
+  height: 60%;
 `;
 
 const Txt = styled.Text`
@@ -290,6 +285,7 @@ const Info = styled.View`
   justify-content: space-between;
   width: 50%;
   margin-top: 20px;
+  margin-bottom: 30px;
 `;
 
 export const AboutMe = styled.Text`
@@ -325,43 +321,11 @@ export const Input = styled.TextInput`
   color: #ffffff;
 `;
 
-const EntertainmentsContainer = styled.View`
-  margin-top: 25px;
-  height: 20%;
-  justify-content: center;
-`;
+const Item = ({ item }) => {
+  return <View style={styles.item}>{item.icon}</View>;
+};
 
-const Entertainments = styled.Text`
-  color: #fff;
-  font-size: 24px;
-`;
-
-const EntertainmentButton = styled.Pressable`
-  border: 1px solid #fff;
-  border-radius: 10px;
-  width: 100%;
-  height: 80%;
-  align-items: center;
-  justify-content: center;
-`;
-
-const EntertainmentText = styled.Text`
-  color: #fff;
-  font-size: 16px;
-`;
-
-const ButtonContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  width: 40%;
-  height: 80%;
-  gap: 40px;
-  margin-top: 15px;
-`;
-
-export function Profile({ navigation }) {
-  const [text, onChangeText] = React.useState('');
-
+export function Gallery({ navigation }) {
   return (
     <Container>
       <Header>
@@ -373,46 +337,97 @@ export function Profile({ navigation }) {
             <SvgXml xml={navBtn} width="80px" height="80px" />
           </Svg>
         </Button>
-        <Button
-          style={{ marginTop: 0 }}
-          onPress={() => navigation.navigate('ProfileEdit')}
-        >
-          <Change>Изменить</Change>
-        </Button>
+        <Change>Добавить фото</Change>
       </Header>
       <Main>
-        <Img source={require('../assets/icons/profile-pic.png')} />
-        <Name>Счастливый пользователь , 6</Name>
-        <Location>Свердловская область , Екатеринбург</Location>
-
         <Info>
-          <Button>
-            <Txt style={{ color: 'white' }}>Информация</Txt>
+          <Button onPress={() => navigation.navigate('Profile')}>
+            <Txt>Информация</Txt>
           </Button>
-          <Button onPress={() => navigation.navigate('Gallery')}>
-            <Txt>Галерея</Txt>
+          <Button>
+            <Txt style={{ color: 'white' }}>Галерея</Txt>
           </Button>
         </Info>
-        <FullForm>
-          <LabelContainer>
-            <AboutMe>О себе</AboutMe>
-          </LabelContainer>
-          <Form>
-            <Input onChangeText={onChangeText} value={text} />
-          </Form>
-        </FullForm>
-        <EntertainmentsContainer>
-          <Entertainments>Увлечения</Entertainments>
-          <ButtonContainer>
-            <EntertainmentButton>
-              <EntertainmentText>Музеи</EntertainmentText>
-            </EntertainmentButton>
-            <EntertainmentButton>
-              <EntertainmentText>Языки</EntertainmentText>
-            </EntertainmentButton>
-          </ButtonContainer>
-        </EntertainmentsContainer>
+
+        <FlatList
+          data={itemData}
+          numColumns={2}
+          renderItem={Item}
+          keyExtractor={(item) => item.alt}
+        />
+        {/* <ImgBlock>
+          <Img source={require('../assets/icons/cat1.png')} />
+          <Img source={require('../assets/icons/cat2.png')} />
+          <Img source={require('../assets/icons/cat3.png')} />
+          <Img source={require('../assets/icons/cat1.png')} />
+          <Img source={require('../assets/icons/cat2.png')} />
+          <Img source={require('../assets/icons/cat1.png')} />
+        </ImgBlock> */}
       </Main>
     </Container>
   );
 }
+
+const itemData = [
+  {
+    icon: (
+      <Image
+        style={{ width: '95%', height: '95%' }}
+        source={require('../assets/icons/cat1.png')}
+      />
+    ),
+  },
+  {
+    icon: (
+      <Image
+        style={{ width: '95%', height: '95%' }}
+        source={require('../assets/icons/cat2.png')}
+      />
+    ),
+  },
+  {
+    icon: (
+      <Image
+        style={{ width: '95%', height: '95%' }}
+        source={require('../assets/icons/cat3.png')}
+      />
+    ),
+  },
+  {
+    icon: (
+      <Image
+        style={{ width: '95%', height: '95%' }}
+        source={require('../assets/icons/cat1.png')}
+      />
+    ),
+  },
+  {
+    icon: (
+      <Image
+        style={{ width: '95%', height: '95%' }}
+        source={require('../assets/icons/cat2.png')}
+      />
+    ),
+  },
+  {
+    icon: (
+      <Image
+        style={{ width: '95%', height: '95%' }}
+        source={require('../assets/icons/cat1.png')}
+      />
+    ),
+  },
+];
+
+const styles = {
+  app: {
+    flex: 2, // the number of columns you want to devide the screen into
+    width: 600,
+    justifyContent: 'space-between',
+  },
+  item: {
+    width: 160,
+    height: 160,
+    alignItems: 'center',
+  },
+};
