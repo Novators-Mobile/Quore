@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  expo:
+    image: ghcr.io/novators-mobile/quore:main
+    network_mode: bridge
+    ports:
+      - 8081:8081
+    volumes:
+      - .:/app/
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config.json:/config.json
+    command: --interval 30 expo
