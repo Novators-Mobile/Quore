@@ -550,7 +550,7 @@ export const Recommendations = ({ navigation }) => {
       <Main>
         <Info>
           <Img source={require('../assets/icons/avatar.png')} />
-          <Name>Хороший мальчик , 5</Name>
+          <Name>Хороший мальчик , 6</Name>
           <Description>Просто кот</Description>
           <NavIcon>
             <SvgXml xml={nav} width="15px" height="20px" />
