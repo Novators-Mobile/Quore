@@ -7,5 +7,6 @@ EXPOSE 8081
 
 RUN npm install
 RUN yarn add expo
+RUN npm install expo-cli --global
 
 CMD ["npx", "expo", "start"]
