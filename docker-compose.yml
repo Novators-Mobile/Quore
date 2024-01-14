@@ -2,7 +2,7 @@ version: '3'
 
 services:
   expo:
-    image: ghcr.io/novators-mobile/quore:main
+    image: ghcr.io/novators-mobile/quore:master
     network_mode: bridge
     ports:
       - 8081:8081
