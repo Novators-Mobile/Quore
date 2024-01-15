@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  expo:
-    image: ghcr.io/novators-mobile/quore:master
-    container_name: expo
-    ports:
-      - 8081:8081
