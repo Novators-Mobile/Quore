@@ -232,11 +232,13 @@
 
 import React from 'react';
 
-import { navBtn } from './Recommendations';
-import Svg, { SvgXml } from 'react-native-svg';
+import SideButton from '../components/SideButton';
 import { styled } from 'styled-components';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 
-import { Container, Button } from './Recommendations';
+const Button = styled.Pressable`
+  margin-top: 28px;
+`;
 
 const Header = styled.View`
   display: flex;
@@ -298,13 +300,10 @@ export const AboutMe = styled.Text`
 `;
 
 export const LabelContainer = styled.View`
-  background-color: #232325;
   margin-start: 10px;
-  z-index: 1;
-  elevation: 1;
   border-radius: 10px;
   position: absolute;
-  top: -12px;
+  top: -20px;
 `;
 
 export const FullForm = styled.View`
@@ -363,56 +362,65 @@ export function Profile({ navigation }) {
   const [text, onChangeText] = React.useState('');
 
   return (
-    <Container>
-      <Header>
-        <Button
-          style={{ aspectRatio: 1 }}
-          onPress={() => navigation.openDrawer()}
-        >
-          <Svg height="100%" width="100%" viewBox="0 0 100 100">
-            <SvgXml xml={navBtn} width="80px" height="80px" />
-          </Svg>
-        </Button>
-        <Button
-          style={{ marginTop: 0 }}
-          onPress={() => navigation.navigate('ProfileEdit')}
-        >
-          <Change>Изменить</Change>
-        </Button>
-      </Header>
-      <Main>
-        <Img source={require('../assets/icons/profile-pic.png')} />
-        <Name>Счастливый пользователь , 6</Name>
-        <Location>Свердловская область , Екатеринбург</Location>
+    <View style={styles.container}>
+      <ImageBackground
+        style={styles.container}
+        source={require('../assets/icons/profile-background.png')}
+      >
+        <Header>
+          <SideButton onPressed={() => navigation.openDrawer()} />
+          <Button
+            style={{ marginTop: 0 }}
+            onPress={() => navigation.navigate('ProfileEdit')}
+          >
+            <Change>Изменить</Change>
+          </Button>
+        </Header>
+        <Main>
+          <Img source={require('../assets/icons/profile-pic.png')} />
+          <Name>Счастливый пользователь , 6</Name>
+          <Location>Свердловская область , Екатеринбург</Location>
 
-        <Info>
-          <Button>
-            <Txt style={{ color: 'white' }}>Информация</Txt>
-          </Button>
-          <Button onPress={() => navigation.navigate('Gallery')}>
-            <Txt>Галерея</Txt>
-          </Button>
-        </Info>
-        <FullForm>
-          <LabelContainer>
-            <AboutMe>О себе</AboutMe>
-          </LabelContainer>
-          <Form>
-            <Input onChangeText={onChangeText} value={text} />
-          </Form>
-        </FullForm>
-        <EntertainmentsContainer>
-          <Entertainments>Увлечения</Entertainments>
-          <ButtonContainer>
-            <EntertainmentButton>
-              <EntertainmentText>Музеи</EntertainmentText>
-            </EntertainmentButton>
-            <EntertainmentButton>
-              <EntertainmentText>Языки</EntertainmentText>
-            </EntertainmentButton>
-          </ButtonContainer>
-        </EntertainmentsContainer>
-      </Main>
-    </Container>
+          <Info>
+            <Button>
+              <Txt style={{ color: 'white' }}>Информация</Txt>
+            </Button>
+            <Button onPress={() => navigation.navigate('Gallery')}>
+              <Txt>Галерея</Txt>
+            </Button>
+          </Info>
+          <FullForm>
+            <LabelContainer>
+              <AboutMe>О себе</AboutMe>
+            </LabelContainer>
+            <Form>
+              <Input onChangeText={onChangeText} value={text} />
+            </Form>
+          </FullForm>
+          <EntertainmentsContainer>
+            <Entertainments>Увлечения</Entertainments>
+            <ButtonContainer>
+              <EntertainmentButton>
+                <EntertainmentText>Музеи</EntertainmentText>
+              </EntertainmentButton>
+              <EntertainmentButton>
+                <EntertainmentText>Языки</EntertainmentText>
+              </EntertainmentButton>
+            </ButtonContainer>
+          </EntertainmentsContainer>
+        </Main>
+      </ImageBackground>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    backgroundColor: '#232325',
+    height: '100%',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'start',
+  },
+});

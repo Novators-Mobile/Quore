@@ -14,6 +14,8 @@ import {
 } from './SignUpScreen';
 import { SvgXml } from 'react-native-svg';
 import styled from 'styled-components/native';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const Container = styled.View`
   margin-top: 150px;
@@ -22,20 +24,26 @@ const Container = styled.View`
 `;
 
 export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
+  const { login } = useContext(AuthContext);
 
   return (
     <Container onLayout={onLayoutRootView}>
       <Title>Войти в аккаунт</Title>
+      {/* <Title>{val}</Title> */}
       <FullForm>
         <Form>
           <SvgXml xml={emailXml} width="20px" height="20px" />
           <Input
             placeholder="Ваша почта"
             placeholderTextColor="#ffffff"
-            onChangeText={setEmail}
-            value={email}
+            onChangeText={(e) => {
+              setForm({ ...form, email: e });
+            }}
+            value={form.email}
             keyboardType="email-address"
           />
         </Form>
@@ -44,14 +52,21 @@ export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
           <Input
             placeholder="Введите пароль"
             placeholderTextColor="#ffffff"
-            onChangeText={setPassword}
-            value={password}
+            onChangeText={(e) => {
+              setForm({ ...form, password: e });
+            }}
+            value={form.password}
             keyboardType="visible-password"
           />
         </Form>
       </FullForm>
       <ButtonContainer>
-        <Button {...touchProps}>
+        <Button
+          {...touchProps}
+          onPress={() => {
+            login(form);
+          }}
+        >
           <Txt>Начать общение</Txt>
         </Button>
 
