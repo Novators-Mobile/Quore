@@ -56,7 +56,7 @@ export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
               setForm({ ...form, password: e });
             }}
             value={form.password}
-            keyboardType="visible-password"
+            secureTextEntry
           />
         </Form>
       </FullForm>

@@ -145,7 +145,7 @@ export const SignUpScreen = ({ onLayoutRootView, touchProps, navigation }) => {
                 auth: { ...form.auth, password: e },
               });
             }}
-            keyboardType="visible-password"
+            secureTextEntry
           />
         </Form>
       </FullForm>
