@@ -1,36 +1,21 @@
 import React, { useState } from 'react';
-import {
-  Title,
-  Txt,
-  Link,
-  Input,
-  Form,
-  FullForm,
-  emailXml,
-  passwordXml,
-  Button,
-  LinkBtn,
-  ButtonContainer,
-} from './SignUpScreen';
-import { SvgXml } from 'react-native-svg';
-import styled from 'styled-components/native';
-
-const Container = styled.View`
-  margin-top: 150px;
-  justify-content: center;
-  align-items: center;
-`;
+import { View, TouchableHighlight, StyleSheet } from 'react-native';
+import { Title, Txt, Link, Input, Form, FullForm, Img } from './SignUpScreen';
 
 export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
-    <Container onLayout={onLayoutRootView}>
+    <View onLayout={onLayoutRootView} style={styles.container}>
       <Title>Войти в аккаунт</Title>
       <FullForm>
         <Form>
-          <SvgXml xml={emailXml} width="20px" height="20px" />
+          <Img
+            source={{
+              uri: 'https://i.ibb.co/jynh385/Vector.png',
+            }}
+          />
           <Input
             placeholder="Ваша почта"
             placeholderTextColor="#ffffff"
@@ -40,7 +25,11 @@ export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
           />
         </Form>
         <Form>
-          <SvgXml xml={passwordXml} width="20px" height="20px" />
+          <Img
+            source={{
+              uri: 'https://i.ibb.co/mRw4zj4/Key.png',
+            }}
+          />
           <Input
             placeholder="Введите пароль"
             placeholderTextColor="#ffffff"
@@ -50,18 +39,63 @@ export const SignInScreen = ({ onLayoutRootView, touchProps, navigation }) => {
           />
         </Form>
       </FullForm>
-      <ButtonContainer>
-        <Button {...touchProps}>
+      <View style={styles.buttonContainer}>
+        <TouchableHighlight {...touchProps} style={styles.button}>
           <Txt>Начать общение</Txt>
-        </Button>
+        </TouchableHighlight>
 
-        <LinkBtn
+        <TouchableHighlight
           {...touchProps}
+          style={styles.linkButton}
           onPress={() => navigation.navigate('SignUpScreen')}
         >
           <Link>Нужно создать новый аккаунт?</Link>
-        </LinkBtn>
-      </ButtonContainer>
-    </Container>
+        </TouchableHighlight>
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    gap: 20,
+    marginTop: 235,
+    alignItems: 'center',
+  },
+  button: {
+    fontSize: 15,
+    color: '#ffffff',
+    backgroundColor: '#DEDED61A',
+    width: 378,
+    borderRadius: 28,
+    paddingBottom: 12,
+    paddingTop: 12,
+    borderWidth: 4,
+    borderColor: '#313131',
+  },
+  linkButton: {
+    fontSize: 15,
+    color: '#ffffff',
+    width: 378,
+    paddingBottom: 12,
+    paddingTop: 12,
+  },
+  btnNormal: {
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 10,
+    height: 30,
+    width: 100,
+  },
+  btnPress: {
+    borderColor: 'black',
+    borderWidth: 1,
+    height: 30,
+    width: 100,
+  },
+});
