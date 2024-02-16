@@ -1,42 +1,52 @@
-import { Pressable, FlatList, RefreshControl, View } from 'react-native';
+import {
+  Pressable,
+  FlatList,
+  RefreshControl,
+  View,
+  StyleSheet,
+} from 'react-native';
 import React from 'react';
 
-import { navBtn } from './Recommendations';
 import Svg, { SvgXml } from 'react-native-svg';
 import axios from 'axios';
 import { User } from '../components/User';
-import { msg, home, people, Container, Footer, Nav } from './Recommendations';
+import { msg, home, people, Nav } from './Recommendations';
+import SideButton from '../components/SideButton';
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { styled } from 'styled-components';
+import { Button } from 'react-native-paper';
 
 export const nav = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 <path d="M7.82502 5.97909C7.82502 5.59923 7.66857 5.23492 7.39008 4.96632C7.11159 4.69772 6.73387 4.54682 6.34002 4.54682C5.94618 4.54682 5.56846 4.69772 5.28997 4.96632C5.01148 5.23492 4.85502 5.59923 4.85502 5.97909C4.85502 6.35895 5.01148 6.72326 5.28997 6.99186C5.56846 7.26046 5.94618 7.41136 6.34002 7.41136C6.73387 7.41136 7.11159 7.26046 7.39008 6.99186C7.66857 6.72326 7.82502 6.35895 7.82502 5.97909ZM12.28 5.97909C12.28 8.72332 9.21399 11.7235 7.48743 13.1958C7.17174 13.4678 6.76329 13.6181 6.34002 13.6181C5.91676 13.6181 5.50831 13.4678 5.19261 13.1958C3.46605 11.7235 0.400024 8.72332 0.400024 5.97909C0.400024 5.22674 0.553667 4.48175 0.85218 3.78666C1.15069 3.09158 1.58823 2.46001 2.13981 1.92801C2.69139 1.39602 3.34621 0.974015 4.06688 0.686101C4.78756 0.398187 5.55997 0.25 6.34002 0.25C7.12008 0.25 7.89249 0.398187 8.61316 0.686101C9.33384 0.974015 9.98866 1.39602 10.5402 1.92801C11.0918 2.46001 11.5294 3.09158 11.8279 3.78666C12.1264 4.48175 12.28 5.22674 12.28 5.97909ZM11.29 5.97909C11.29 4.71288 10.7685 3.49854 9.8402 2.60319C8.9119 1.70785 7.65285 1.20485 6.34002 1.20485C5.0272 1.20485 3.76815 1.70785 2.83985 2.60319C1.91154 3.49854 1.39002 4.71288 1.39002 5.97909C1.39002 7.03706 1.99887 8.26595 2.94432 9.4958C3.86898 10.697 5.01045 11.7655 5.84799 12.4807C5.98275 12.5985 6.15814 12.6637 6.34002 12.6637C6.52191 12.6637 6.6973 12.5985 6.83205 12.4807C7.66959 11.7655 8.81206 10.6979 9.73573 9.4958C10.6812 8.26595 11.29 7.03706 11.29 5.97909Z" fill="white"/>
 </svg>`;
 
+const Container = styled.View`
+  align-items: center;
+  background-color: #232325;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Header = styled.View`
   width: 100%;
-  margin-bottom: 30px;
-  height: 11%;
+  margin-bottom: 5%;
+  margin-left: 25px;
 `;
 
 const Main = styled.View`
-  height: 70%;
   width: 100%;
-  margin-bottom: 70px;
   padding: 0 20px;
 `;
 
-const Button = styled.Pressable`
-  margin-top: 28px;
-  margin-left: 15px;
-`;
-
 export const Title = styled.Text`
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 500;
   color: #ffffff;
   font-family: ubuntu-regular;
-  margin-top: 30px;
 `;
 
 const ItemsView = styled.View`
@@ -72,29 +82,24 @@ export function Likes({ navigation }) {
   React.useEffect(fetchUsers, []);
 
   return (
-    <Container>
-      <Header>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '60%',
-            height: '100%',
-          }}
-        >
-          <Button
-            style={{ aspectRatio: 1 }}
-            onPress={() => navigation.openDrawer()}
-          >
-            <Svg height="100%" width="100%" viewBox="0 0 100 100">
-              <SvgXml xml={navBtn} width="100px" height="100px" />
-            </Svg>
-          </Button>
-          <Title>Лайки</Title>
+    <GestureHandlerRootView style={styles.container}>
+      <Header
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flex: 1,
+        }}
+      >
+        <View style={{ flex: 2 }}>
+          <SideButton onPressed={() => navigation.openDrawer()} />
         </View>
+        <View style={{ flex: 4 }}>
+          <Title style={{ textAlign: 'center' }}>Лайки</Title>
+        </View>
+        <View style={{ flex: 2 }}></View>
       </Header>
-      <Main>
+      <Main style={{ alignItems: 'center', flex: 5 }}>
         <FlatList
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={fetchUsers} />
@@ -116,28 +121,45 @@ export function Likes({ navigation }) {
           )}
         />
       </Main>
-      <Footer>
-        <Nav>
-          <Pressable>
-            <Svg height="100%" width="100%" viewBox="0 0 100 100">
-              <SvgXml xml={msg} width="70px" height="100px" />
+      <View style={{ flex: 1, marginTop: '10%' }}>
+        <Nav
+          style={{
+            justifyContent: 'space-around',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Pressable style={{ flex: 1 }}>
+            <Svg height="70%" width="70%" viewBox="0 0 100 100">
+              <SvgXml xml={msg} width="70px" height="70px" />
             </Svg>
           </Pressable>
-          <Pressable style={{ marginTop: -50 }}>
-            <Svg height="100%" width="100%" viewBox="0 0 100 100">
+          <Pressable style={{ flex: 1 }}>
+            <Svg height="70%" width="70%" viewBox="0 0 100 100">
               <SvgXml xml={home} width="65px" height="70px" />
             </Svg>
           </Pressable>
-          <Pressable>
-            <Svg height="100%" width="70%" viewBox="0 0 100 100">
-              <SvgXml xml={people} width="80px" height="100px" />
+          <Pressable style={{ flex: 1 }}>
+            <Svg height="70%" width="70%" viewBox="0 0 100 100">
+              <SvgXml xml={people} width="70px" height="70px" />
             </Svg>
           </Pressable>
         </Nav>
-      </Footer>
-    </Container>
+      </View>
+    </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    backgroundColor: '#232325',
+    height: '100%',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+});
 
 // import {
 //   View,

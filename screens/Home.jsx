@@ -1,8 +1,22 @@
-import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableHighlight,
+  StyleSheet,
+  ImageBackground,
+  Image,
+} from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Txt } from './SignUpScreen';
+import styled from 'styled-components/native';
+
+const Info = styled.View`
+  padding-bottom: 16px;
+  width: 100%;
+  height: 100%;
+`;
 
 export const Home = ({ navigation }) => {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -11,7 +25,7 @@ export const Home = ({ navigation }) => {
 
   const touchProps = {
     activeOpacity: 1,
-    underlayColor: '#D9D9D9', // <-- "backgroundColor" will be always overwritten by "underlayColor"
+    underlayColor: '#D9D9D9',
     style: isPress ? styles.btnPress : styles.button,
     onHideUnderlay: () => setIsPress(false),
     onShowUnderlay: () => setIsPress(true),
@@ -25,6 +39,7 @@ export const Home = ({ navigation }) => {
           'roboto-regular': require('../assets/fonts/Roboto-Regular.ttf'),
           'roboto-bold': require('../assets/fonts/Roboto-Bold.ttf'),
           'ubuntu-regular': require('../assets/fonts/Ubuntu-Regular.ttf'),
+          'source-serif-italic': require('../assets/fonts/SourceSerif4-Italic.ttf'),
         });
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
@@ -42,11 +57,6 @@ export const Home = ({ navigation }) => {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      // This tells the splash screen to hide immediately! If we call this after
-      // `setAppIsReady`, then we may see a blank screen while the app is
-      // loading its initial state and rendering its first pixels. So instead,
-      // we hide the splash screen once we know the root view has already
-      // performed layout.
       await SplashScreen.hideAsync();
     }
   }, [appIsReady]);
@@ -56,16 +66,19 @@ export const Home = ({ navigation }) => {
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={styles.container}>
-      <View style={styles.mainTitle}>
-        <Text style={styles.title}>QUORE</Text>
-      </View>
+    <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+      <Info style={{ flex: 5, alignItems: 'center', marginTop: '10%' }}>
+        <Image source={require('../assets/icons/background.png')} />
+        <View style={styles.mainTitle}>
+          <Text style={styles.title}>QUORE</Text>
+
+          <Text style={styles.text}>
+            Создайте новый аккаунт или войдите, чтобы продолжить.
+          </Text>
+        </View>
+      </Info>
 
       <View style={styles.buttonContainer}>
-        <Text style={styles.text}>
-          Создайте новый аккаунт или войдите, чтобы продолжить.
-        </Text>
-
         <TouchableHighlight
           {...touchProps}
           style={styles.button}
@@ -87,13 +100,10 @@ export const Home = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 220,
-  },
   buttonContainer: {
     gap: 20,
-    marginTop: 30,
     alignItems: 'center',
+    flex: 1,
   },
   button: {
     fontSize: 16,
@@ -116,19 +126,20 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#ffffff',
-    fontFamily: 'ubuntu-regular',
-    fontWeight: 500,
+    fontFamily: 'source-serif-italic',
     textAlign: 'center',
     fontSize: 80,
-    fontStyle: 'italic',
-    fontWeight: 'bold',
   },
   text: {
-    width: 234,
+    width: 240,
     fontSize: 15,
+    textAlign: 'center',
     color: '#ffffff',
   },
   mainTitle: {
-    marginBottom: 200,
+    position: 'absolute',
+    height: '50%',
+    top: '35%',
+    justifyContent: 'space-between',
   },
 });

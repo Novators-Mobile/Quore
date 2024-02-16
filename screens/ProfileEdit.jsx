@@ -1,31 +1,21 @@
-import { Pressable, View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 
 import Svg, { SvgXml } from 'react-native-svg';
 
-import { people, navBtn, Container, Footer, Nav } from './Recommendations';
-
 import { RadioButton } from 'react-native-paper';
 
-import { FullForm, Form, Input, LabelContainer, AboutMe } from './Profile';
+import { FullForm, Form, Input, AboutMe } from './Profile';
 
 import { Title } from './Likes';
 
 import { styled } from 'styled-components';
 
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+
 export const nav = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 <path d="M7.82502 5.97909C7.82502 5.59923 7.66857 5.23492 7.39008 4.96632C7.11159 4.69772 6.73387 4.54682 6.34002 4.54682C5.94618 4.54682 5.56846 4.69772 5.28997 4.96632C5.01148 5.23492 4.85502 5.59923 4.85502 5.97909C4.85502 6.35895 5.01148 6.72326 5.28997 6.99186C5.56846 7.26046 5.94618 7.41136 6.34002 7.41136C6.73387 7.41136 7.11159 7.26046 7.39008 6.99186C7.66857 6.72326 7.82502 6.35895 7.82502 5.97909ZM12.28 5.97909C12.28 8.72332 9.21399 11.7235 7.48743 13.1958C7.17174 13.4678 6.76329 13.6181 6.34002 13.6181C5.91676 13.6181 5.50831 13.4678 5.19261 13.1958C3.46605 11.7235 0.400024 8.72332 0.400024 5.97909C0.400024 5.22674 0.553667 4.48175 0.85218 3.78666C1.15069 3.09158 1.58823 2.46001 2.13981 1.92801C2.69139 1.39602 3.34621 0.974015 4.06688 0.686101C4.78756 0.398187 5.55997 0.25 6.34002 0.25C7.12008 0.25 7.89249 0.398187 8.61316 0.686101C9.33384 0.974015 9.98866 1.39602 10.5402 1.92801C11.0918 2.46001 11.5294 3.09158 11.8279 3.78666C12.1264 4.48175 12.28 5.22674 12.28 5.97909ZM11.29 5.97909C11.29 4.71288 10.7685 3.49854 9.8402 2.60319C8.9119 1.70785 7.65285 1.20485 6.34002 1.20485C5.0272 1.20485 3.76815 1.70785 2.83985 2.60319C1.91154 3.49854 1.39002 4.71288 1.39002 5.97909C1.39002 7.03706 1.99887 8.26595 2.94432 9.4958C3.86898 10.697 5.01045 11.7655 5.84799 12.4807C5.98275 12.5985 6.15814 12.6637 6.34002 12.6637C6.52191 12.6637 6.6973 12.5985 6.83205 12.4807C7.66959 11.7655 8.81206 10.6979 9.73573 9.4958C10.6812 8.26595 11.29 7.03706 11.29 5.97909Z" fill="white"/>
-</svg>`;
-
-const msg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-<g clip-path="url(#clip0_132_51)">
-  <path d="M1 18.0211L2.3 14.1211C1.17644 12.4594 0.769993 10.4915 1.15622 8.58338C1.54244 6.67527 2.69506 4.95675 4.39977 3.74735C6.10447 2.53795 8.24526 1.91997 10.4241 2.00832C12.6029 2.09666 14.6715 2.88531 16.2453 4.22764C17.819 5.56996 18.7909 7.37462 18.9801 9.30606C19.1693 11.2375 18.563 13.1643 17.2739 14.7282C15.9848 16.2921 14.1007 17.3867 11.9718 17.8084C9.84293 18.2302 7.6142 17.9504 5.7 17.0211L1 18.0211Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<defs>
-  <clipPath id="clip0_132_51">
-    <rect width="20" height="20" fill="white"/>
-  </clipPath>
-</defs>
 </svg>`;
 
 export const home = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -49,7 +39,7 @@ const Header = styled.View`
   width: 100%;
   height: 10%;
   align-items: center;
-  margin-bottom: 70px;
+  justify-content: center;
 `;
 
 const Main = styled.View`
@@ -75,12 +65,30 @@ const ContinueButton = styled.Pressable`
   border: 3px solid #6f6f6f;
 `;
 
+const LabelContainer = styled.View`
+  background-color: #232325;
+  margin-start: 10px;
+  z-index: 1;
+  elevation: 1;
+  border-radius: 10px;
+  position: absolute;
+  top: -12px;
+`;
+
 export function ProfileEdit({ navigation }) {
-  const [text, onChangeText] = React.useState('');
   const [checked, setChecked] = React.useState('first');
+  const [form, setForm] = React.useState({
+    profile: {
+      name: '',
+      birth: '',
+      sex: '',
+    },
+  });
+
+  const { register } = useContext(AuthContext);
 
   return (
-    <Container>
+    <View style={styles.container}>
       <Header>
         <Title>Создание профиля</Title>
       </Header>
@@ -91,10 +99,23 @@ export function ProfileEdit({ navigation }) {
             <AboutMe>Имя</AboutMe>
           </LabelContainer>
           <Form style={{ height: '100%', width: '100%' }}>
-            <Input onChangeText={onChangeText} value={text} />
+            <Input
+              onChangeText={(e) => {
+                setForm({ ...form, profile: { ...form.profile, name: e } });
+              }}
+              value={form.profile.name}
+            />
+          </Form>
+          <Form style={{ height: '100%', width: '100%' }}>
+            <Input
+              onChangeText={(e) => {
+                setForm({ ...form, profile: { ...form.profile, birth: e } });
+              }}
+              value={form.profile.birth}
+            />
           </Form>
         </FullForm>
-        <Button>
+        {/* <Button>
           <View
             style={{
               display: 'flex',
@@ -109,7 +130,8 @@ export function ProfileEdit({ navigation }) {
             </Svg>
             <Text style={{ color: '#fff' }}>Укажите дату рождения</Text>
           </View>
-        </Button>
+        </Button> */}
+
         <FullForm style={{ height: '13%', width: '90%' }}>
           <LabelContainer>
             <AboutMe>Пол</AboutMe>
@@ -141,7 +163,13 @@ export function ProfileEdit({ navigation }) {
                 <RadioButton
                   value="first"
                   status={checked === 'first' ? 'checked' : 'unchecked'}
-                  onPress={() => setChecked('first')}
+                  onPress={() => {
+                    setChecked('first');
+                    setForm({
+                      ...form,
+                      profile: { ...form.profile, sex: 'мужской' },
+                    });
+                  }}
                 />
                 <Text style={{ color: '#39393B' }}>Мужской</Text>
               </View>
@@ -155,7 +183,13 @@ export function ProfileEdit({ navigation }) {
                 <RadioButton
                   value="second"
                   status={checked === 'second' ? 'checked' : 'unchecked'}
-                  onPress={() => setChecked('second')}
+                  onPress={() => {
+                    setChecked('second');
+                    setForm({
+                      ...form,
+                      profile: { ...form.profile, sex: 'женский' },
+                    });
+                  }}
                   style={{ width: 10 }}
                 />
                 <Text style={{ color: '#39393B' }}>Женский</Text>
@@ -163,10 +197,25 @@ export function ProfileEdit({ navigation }) {
             </View>
           </Form>
         </FullForm>
-        <ContinueButton>
+        <ContinueButton
+          onPress={() => {
+            register();
+          }}
+        >
           <Text style={{ color: '#fff', fontSize: 16 }}>Продолжить</Text>
         </ContinueButton>
       </Main>
-    </Container>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    backgroundColor: '#232325',
+    height: '100%',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'start',
+  },
+});
