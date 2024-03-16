@@ -22,6 +22,7 @@ import { Profile } from '../screens/Profile';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthProvider } from '../context/AuthContext';
 import { SignUpScreen } from '../screens/SignUpScreen';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 
@@ -64,7 +65,7 @@ const logo = `<svg width="132" height="40" viewBox="0 0 132 40" fill="none" xmln
 
 const SideBar = () => {
   return (
-    <>
+    <NavigationContainer>
       <Drawer.Navigator
         drawerContent={(props) => {
           return (
@@ -176,7 +177,7 @@ const SideBar = () => {
           component={Settings}
         />
       </Drawer.Navigator>
-    </>
+    </NavigationContainer>
   );
 };
 

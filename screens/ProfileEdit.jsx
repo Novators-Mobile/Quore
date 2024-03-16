@@ -85,7 +85,7 @@ export function ProfileEdit({ navigation }) {
     },
   });
 
-  const { register } = useContext(AuthContext);
+  // const { register } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -198,9 +198,9 @@ export function ProfileEdit({ navigation }) {
           </Form>
         </FullForm>
         <ContinueButton
-          onPress={() => {
-            register();
-          }}
+        // onPress={() => {
+        //   register();
+        // }}
         >
           <Text style={{ color: '#fff', fontSize: 16 }}>Продолжить</Text>
         </ContinueButton>

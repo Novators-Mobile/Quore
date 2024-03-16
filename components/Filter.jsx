@@ -1,9 +1,11 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Txt } from '../screens/SignUpScreen';
 import { SvgXml } from 'react-native-svg';
 
 import { GestureDetector } from 'react-native-gesture-handler';
+
+import * as Location from 'expo-location';
 
 import Animated, {
   SlideInDown,
@@ -46,6 +48,25 @@ const Title = styled.Text`
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export function Filter({ toggleSheet, pan, translateY }) {
+  const [location, setLocation] = useState();
+  const [address, setAddress] = useState();
+
+  useEffect(() => {
+    const getPermissions = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('please grant loc permissions');
+        return;
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      setLocation(currentLocation);
+      console.log('Location: ');
+      console.log(currentLocation);
+    };
+    getPermissions();
+  });
+
   return (
     <>
       <AnimatedPressable

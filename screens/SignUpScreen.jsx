@@ -152,9 +152,10 @@ export const SignUpScreen = ({ onLayoutRootView, touchProps, navigation }) => {
       <ButtonContainer>
         <Button
           {...touchProps}
-          onPress={() => {
-            register(form);
-          }}
+          // onPress={() => {
+          //   register(form);
+          // }}
+          onPress={() => navigation.navigate('EmailSend')}
         >
           <Txt>Зарегистрироваться</Txt>
         </Button>
