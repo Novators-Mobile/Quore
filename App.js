@@ -43,11 +43,11 @@ export default function App() {
   }
 
   return (
-    <AuthProvider>
-      {/* {userInfo !== null ? <SideBar /> : <Navigation />} */}
-      <Navigation />
-      {/* <SignUpScreen style={{ backgroundColor: '#000' }}></SignUpScreen> */}
-    </AuthProvider>
-    // <SideBar />
+    // <AuthProvider>
+    // /* {userInfo !== null ? <SideBar /> : <Navigation />} */}
+    // <Navigation />
+    // /* <SignUpScreen style={{ backgroundColor: '#000' }}></SignUpScreen> */}
+    // /* </AuthProvider> */}
+    <SideBar />
   );
 }

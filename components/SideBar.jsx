@@ -19,10 +19,17 @@ import { Likes } from '../screens/Likes';
 import { Gallery } from '../screens/Gallery';
 import { Settings } from '../screens/Settings';
 import { Profile } from '../screens/Profile';
+import { Events } from '../screens/Events';
+import { Question } from '../screens/Question';
+import { Rels } from '../screens/Rels';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthProvider } from '../context/AuthContext';
 import { SignUpScreen } from '../screens/SignUpScreen';
 import { NavigationContainer } from '@react-navigation/native';
+import { Content } from '../screens/Content';
+import { Zodiac } from '../screens/Zodiac';
+import { Match } from '../screens/Match';
+import { FullProfile } from '../screens/FullProfile';
 
 const Drawer = createDrawerNavigator();
 
@@ -168,6 +175,7 @@ const SideBar = () => {
         <Drawer.Screen
           name="Settings"
           options={{
+            headerShown: false,
             drawerLabel: 'Настройки',
             title: 'Настройки',
             drawerIcon: () => (
@@ -175,6 +183,90 @@ const SideBar = () => {
             ),
           }}
           component={Settings}
+        />
+        <Drawer.Screen
+          name="Events"
+          options={{
+            headerShown: false,
+            drawerLabel: 'Мероприятия',
+            title: 'Мероприятия',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={Events}
+        />
+        <Drawer.Screen
+          name="Question"
+          options={{
+            headerShown: false,
+            drawerLabel: 'Вопрос',
+            title: 'Вопрос',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={Question}
+        />
+        <Drawer.Screen
+          name="Rels"
+          options={{
+            headerShown: false,
+            drawerLabel: 'Rels',
+            title: 'Rels',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={Rels}
+        />
+        <Drawer.Screen
+          name="Content"
+          options={{
+            headerShown: false,
+            drawerLabel: 'Content',
+            title: 'Content',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={Content}
+        />
+        <Drawer.Screen
+          name="Zodiac"
+          options={{
+            headerShown: false,
+            drawerLabel: 'Zodiac',
+            title: 'Zodiac',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={Zodiac}
+        />
+        <Drawer.Screen
+          name="Match"
+          options={{
+            headerShown: false,
+            drawerLabel: 'Match',
+            title: 'Match',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={Match}
+        />
+        <Drawer.Screen
+          name="FullProfile"
+          options={{
+            headerShown: false,
+            drawerLabel: 'FullProfile',
+            title: 'FullProfile',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={FullProfile}
         />
       </Drawer.Navigator>
     </NavigationContainer>

@@ -59,6 +59,13 @@ export const people = `<svg xmlns="http://www.w3.org/2000/svg" width="23" height
 <path d="M6.13333 0C3.60333 0 1.53333 2.1 1.53333 4.66667C1.53333 6.20978 2.28237 7.58333 3.42623 8.43422C1.40453 9.45156 0 11.5609 0 14H1.53333C1.53333 11.4147 3.58493 9.33333 6.13333 9.33333C8.68173 9.33333 10.7333 11.4147 10.7333 14H12.2667C12.2667 11.4147 14.3183 9.33333 16.8667 9.33333C19.4151 9.33333 21.4667 11.4147 21.4667 14H23C23 11.5601 21.5955 9.45156 19.5738 8.43422C20.1591 8.00151 20.6356 7.43482 20.9645 6.78018C21.2934 6.12555 21.4655 5.40143 21.4667 4.66667C21.4667 2.1 19.3967 0 16.8667 0C14.3367 0 12.2667 2.1 12.2667 4.66667C12.2667 6.20978 13.0157 7.58333 14.1596 8.43422C13.0394 8.99294 12.1122 9.88258 11.5 10.9861C10.8878 9.88258 9.96059 8.99294 8.84043 8.43422C9.42579 8.00151 9.90227 7.43482 10.2312 6.78018C10.5601 6.12555 10.7321 5.40143 10.7333 4.66667C10.7333 2.1 8.66333 0 6.13333 0ZM6.13333 1.55556C7.83763 1.55556 9.2 2.93767 9.2 4.66667C9.2 6.39567 7.83763 7.77778 6.13333 7.77778C4.42903 7.77778 3.06667 6.39567 3.06667 4.66667C3.06667 2.93767 4.42903 1.55556 6.13333 1.55556ZM16.8667 1.55556C18.571 1.55556 19.9333 2.93767 19.9333 4.66667C19.9333 6.39567 18.571 7.77778 16.8667 7.77778C15.1624 7.77778 13.8 6.39567 13.8 4.66667C13.8 2.93767 15.1624 1.55556 16.8667 1.55556Z" fill="#6F6F6F"/>
 </svg>`;
 
+const percents = `<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="7.5" cy="4.5" r="4" stroke="white"/>
+<circle cx="7.5" cy="4.5" r="4" stroke="white"/>
+<circle cx="4.5" cy="8.5" r="4" stroke="white"/>
+<circle cx="4.5" cy="8.5" r="4" stroke="white"/>
+</svg>`;
+
 export const Header = styled.View`
   width: 100%;
   margin-bottom: 5%;
@@ -127,6 +134,21 @@ const NavIcon = styled.View`
   padding: 5px 10px;
   border-radius: 10px;
   top: 90%;
+  left: 75%;
+`;
+
+const HighNavIcon = styled.View`
+  background-color: rgba(255, 255, 255, 0.18);
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20%;
+  height: 7%;
+  justify-content: space-around;
+  padding: 5px 10px;
+  border-radius: 10px;
+  top: 5%;
   left: 75%;
 `;
 
@@ -210,6 +232,10 @@ export const Recommendations = ({ navigation }) => {
             <Img source={require('../assets/icons/avatar.png')} />
             <Name>Хороший мальчик , 5</Name>
             <Description>Просто кот</Description>
+            <HighNavIcon>
+              <SvgXml xml={percents} width="15px" height="20px" />
+              <Txt>51%</Txt>
+            </HighNavIcon>
             <NavIcon>
               <SvgXml xml={nav} width="15px" height="20px" />
               <Txt>1 км</Txt>
