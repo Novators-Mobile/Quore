@@ -96,7 +96,7 @@ export const Button = styled.Pressable`
   margin-top: 28px;
 `;
 
-const Title = styled.Text`
+export const Title = styled.Text`
   color: #ffffff;
   font-family: ubuntu-regular;
   font-size: 24px;

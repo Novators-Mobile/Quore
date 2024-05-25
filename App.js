@@ -8,10 +8,33 @@ import { useContext } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { AuthContext } from './context/AuthContext';
 
+import messaging from '@react-native-firebase/messaging';
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   // const { userInfo } = useContext(AuthContext);
   // console.log(userInfo);
+
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  }
+
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    console.log('Token:', token);
+  };
+
+  useEffect(() => {
+    requestUserPermission();
+    getToken();
+  }, []);
 
   useEffect(() => {
     async function prepare() {

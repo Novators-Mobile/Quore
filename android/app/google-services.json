@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "112978625300",
+    "project_id": "quore-api",
+    "storage_bucket": "quore-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112978625300:android:7acbec55439e17e434b801",
+        "android_client_info": {
+          "package_name": "ru.novatorsmobile.quore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxZb5O3KJAmWYT9emq9fmWmyN-OnaNh6M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

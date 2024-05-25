@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SideButton from '../components/SideButton';
 import { styled } from 'styled-components';
 import {
@@ -11,6 +12,10 @@ import {
   Image,
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
+import { Pressable } from 'react-native';
+import { useState } from 'react';
+
+import { ButtonContainer } from './SignUpScreen';
 
 const rak = `<svg width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M15 5.5C8.125 5.5 2.5 9.975 2.5 15.5C2.5 18.15 4.5625 20.3375 7.2 20.5H7.5C8.82608 20.5 10.0979 19.9732 11.0355 19.0355C11.9732 18.0979 12.5 16.8261 12.5 15.5C12.5 14.1739 11.9732 12.9021 11.0355 11.9645C10.0979 11.0268 8.82608 10.5 7.5 10.5H7.2C9.30484 8.51399 12.1068 7.43631 15 7.5C17.2125 7.475 19.375 8.0875 21.25 9.25L22.8125 7.6875C20.4726 6.22282 17.7603 5.46336 15 5.5ZM7.5 13C8.16304 13 8.79893 13.2634 9.26777 13.7322C9.73661 14.2011 10 14.837 10 15.5C10 16.8875 8.85 18 7.5 18C6.87808 18.0031 6.27733 17.7743 5.81506 17.3583C5.35279 16.9422 5.06218 16.3688 5 15.75V15.25C5.06218 14.6312 5.35279 14.0578 5.81506 13.6417C6.27733 13.2257 6.87808 12.9969 7.5 13ZM22.8 10.5H22.5C21.1739 10.5 19.9021 11.0268 18.9645 11.9645C18.0268 12.9021 17.5 14.1739 17.5 15.5C17.5 16.8261 18.0268 18.0979 18.9645 19.0355C19.9021 19.9732 21.1739 20.5 22.5 20.5H22.8C20.6952 22.486 17.8932 23.5637 15 23.5C12.7875 23.525 10.625 22.9125 8.75 21.75L7.2 23.3C9.5375 24.7625 12.2375 25.5 15 25.5C21.875 25.5 27.5 21.025 27.5 15.5C27.5 12.85 25.4375 10.6625 22.8 10.5ZM22.5 18C21.837 18 21.2011 17.7366 20.7322 17.2678C20.2634 16.7989 20 16.163 20 15.5C20 14.1125 21.15 13 22.5 13C23.1219 12.9969 23.7227 13.2257 24.1849 13.6417C24.6472 14.0578 24.9378 14.6312 25 15.25V15.75C24.9378 16.3688 24.6472 16.9422 24.1849 17.3583C23.7227 17.7743 23.1219 18.0031 22.5 18Z" fill="white"/>
@@ -86,6 +91,11 @@ const send = `<svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns=
 </svg>
 `;
 
+const love = `<svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.6818 0C16.2955 0 14.2205 1.10805 13 2.96493C11.7795 1.10805 9.70455 0 7.31818 0C5.51053 0.00216767 3.77753 0.742506 2.49932 2.05861C1.22112 3.37471 0.502105 5.15911 0.5 7.02035C0.5 10.4369 2.56818 13.9927 6.64773 17.5872C8.5171 19.2273 10.5364 20.6771 12.6773 21.9164C12.7765 21.9713 12.8874 22 13 22C13.1126 22 13.2235 21.9713 13.3227 21.9164C15.4636 20.6771 17.4829 19.2273 19.3523 17.5872C23.4318 13.9927 25.5 10.4369 25.5 7.02035C25.4979 5.15911 24.7789 3.37471 23.5007 2.05861C22.2225 0.742506 20.4895 0.00216767 18.6818 0ZM13 20.4889C11.1352 19.3809 1.86364 13.5399 1.86364 7.02035C1.86514 5.5313 2.4403 4.10367 3.4629 3.05075C4.4855 1.99783 5.87201 1.40562 7.31818 1.40407C9.62273 1.40407 11.558 2.67124 12.3693 4.71183C12.4207 4.84059 12.5081 4.95072 12.6204 5.02822C12.7327 5.10573 12.8648 5.14711 13 5.14711C13.1352 5.14711 13.2673 5.10573 13.3796 5.02822C13.4919 4.95072 13.5793 4.84059 13.6307 4.71183C14.442 2.67124 16.3773 1.40407 18.6818 1.40407C20.128 1.40562 21.5145 1.99783 22.5371 3.05075C23.5597 4.10367 24.1349 5.5313 24.1364 7.02035C24.1364 13.5399 14.8648 19.3809 13 20.4889Z" fill="white"/>
+</svg>
+`;
+
 const oven = `<svg width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.1706 6.39075C18.5756 4.73587 19.971 4.03757 21.078 3.7712C21.6268 3.63915 22.0922 3.61624 22.4363 3.62752C22.6083 3.63316 22.7485 3.64729 22.8508 3.65989C22.8912 3.66487 22.9271 3.6698 22.9521 3.67325L22.9676 3.67537L22.9729 3.67609C23.7974 3.68558 24.7462 4.06328 25.4895 4.67611C26.2517 5.30458 26.875 6.2469 26.875 7.41884C26.875 8.42134 26.6987 9.33849 26.1918 10.1027C25.6789 10.876 24.8802 11.4143 23.7902 11.7566C23.4609 11.8601 23.1101 11.677 23.0067 11.3476C22.9032 11.0183 23.0863 10.6675 23.4156 10.5641C24.311 10.2828 24.8358 9.8857 25.1501 9.41182C25.4704 8.9289 25.625 8.28709 25.625 7.41884C25.625 6.72001 25.2556 6.10337 24.6943 5.64056C24.1236 5.17 23.4329 4.9259 22.9412 4.9259C22.8823 4.9259 22.8168 4.9165 22.8017 4.91433L22.7991 4.91396L22.7785 4.91115C22.7539 4.90776 22.7287 4.9043 22.6979 4.90051C22.6223 4.89119 22.5207 4.88096 22.3954 4.87685C22.1448 4.86864 21.7935 4.88471 21.3704 4.98651C20.5338 5.18782 19.3656 5.7367 18.1235 7.19974C17.2626 8.21377 16.6331 9.58168 16.2192 10.9237C15.8053 12.2658 15.625 13.5227 15.625 14.2783V26.75C15.625 27.0952 15.3452 27.375 15 27.375C14.6548 27.375 14.375 27.0952 14.375 26.75V14.25C14.375 13.4881 14.2039 12.2248 13.8124 10.8777C13.4206 9.5295 12.825 8.15676 12.012 7.14043C10.8395 5.6748 9.74227 5.13168 8.96694 4.93369C8.57424 4.83341 8.2489 4.81776 8.01787 4.82579C7.90223 4.82981 7.80849 4.83983 7.73858 4.84897C7.71005 4.8527 7.68685 4.85608 7.66365 4.85947L7.64396 4.86233L7.64227 4.86259C7.63005 4.86447 7.5619 4.875 7.5 4.875C7.05639 4.875 6.41619 5.11084 5.88032 5.57973C5.35626 6.03829 5 6.6592 5 7.375C5 8.25068 5.14727 8.90013 5.45187 9.3875C5.74853 9.86215 6.23921 10.2543 7.07264 10.5321C7.40011 10.6412 7.57708 10.9952 7.46793 11.3226C7.35877 11.6501 7.00482 11.8271 6.67736 11.7179C5.63579 11.3707 4.87647 10.8253 4.39188 10.05C3.91523 9.28737 3.75 8.37432 3.75 7.375C3.75 6.21579 4.33124 5.27421 5.05718 4.63901C5.76091 4.02325 6.66681 3.63638 7.46472 3.62525L9.27622 3.72256C10.3365 3.99331 11.6605 4.70019 12.988 6.35956C13.9419 7.55186 14.5963 9.09578 15.0128 10.5288C15.016 10.54 15.0193 10.5513 15.0225 10.5625C15.0232 10.5601 15.024 10.5577 15.0247 10.5553C15.4666 9.12251 16.1607 7.58035 17.1706 6.39075Z" fill="white" stroke="white" stroke-linecap="round"/>
 </svg>
@@ -102,22 +112,16 @@ const percentage = `<svg width="40" height="40" viewBox="0 0 40 40" fill="none" 
 </svg>
 `;
 
-const veri = `<svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M18.971 11C19.0516 10.6314 19.2013 10.2813 19.4121 9.96833C19.6515 9.65895 19.8237 9.30299 19.9177 8.92324C20.0117 8.54349 20.0253 8.1483 19.9578 7.76296C19.783 7.40267 19.5342 7.08328 19.2276 6.82565C18.9211 6.56802 18.5636 6.37793 18.1786 6.26779C17.8461 6.15374 17.5352 5.9844 17.259 5.76691C17.1176 5.43017 17.0391 5.07038 17.0273 4.70534C17.0399 4.30751 16.9685 3.91149 16.8178 3.5431C16.6671 3.17471 16.4404 2.8422 16.1526 2.56724C15.8045 2.38011 15.4207 2.26871 15.0264 2.24037C14.6322 2.21202 14.2364 2.26737 13.865 2.40278C13.511 2.50608 13.1402 2.53909 12.7735 2.49996C12.4826 2.31759 12.2289 2.08167 12.026 1.80471C11.7991 1.46002 11.5008 1.16815 11.1512 0.948872C10.8017 0.729595 10.4091 0.588043 10 0.533813C9.59932 0.5877 9.21448 0.725395 8.87057 0.937928C8.52665 1.15046 8.23136 1.43307 8.00395 1.76733C7.80098 2.04429 7.5473 2.28021 7.25636 2.46258C6.88968 2.50171 6.51889 2.4687 6.16489 2.3654C5.79354 2.22999 5.39775 2.17465 5.0035 2.20299C4.60924 2.23134 4.22544 2.34273 3.87728 2.52987C3.58407 2.80217 3.35187 3.13349 3.19595 3.50201C3.04004 3.87053 2.96395 4.2679 2.9727 4.66796C2.96555 5.04562 2.88692 5.41852 2.74095 5.76691C2.46751 5.99764 2.15648 6.17971 1.82142 6.30517C1.43641 6.41531 1.07894 6.6054 0.772361 6.86303C0.465779 7.12066 0.216969 7.44004 0.0421685 7.80034C-0.0253397 8.18568 -0.0116703 8.58086 0.0823025 8.96062C0.176275 9.34037 0.348482 9.69633 0.587905 10.0057C0.794479 10.3074 0.943977 10.6444 1.02898 11C0.948365 11.3686 0.798706 11.7187 0.587905 12.0317C0.348482 12.3411 0.176275 12.697 0.0823025 13.0768C-0.0116703 13.4565 -0.0253397 13.8517 0.0421685 14.237C0.216969 14.5973 0.465779 14.9167 0.772361 15.1744C1.07894 15.432 1.43641 15.6221 1.82142 15.7322C2.15648 15.8577 2.46751 16.0397 2.74095 16.2705C2.88238 16.6072 2.96093 16.967 2.9727 17.332C2.96014 17.7299 3.03153 18.1259 3.18224 18.4943C3.33295 18.8627 3.55958 19.1952 3.84738 19.4701C4.19554 19.6573 4.57934 19.7687 4.97359 19.797C5.36784 19.8254 5.76363 19.77 6.13499 19.6346C6.48898 19.5313 6.85978 19.4983 7.22646 19.5374C7.5174 19.7198 7.77108 19.9557 7.97404 20.2327C8.20471 20.5704 8.50471 20.8551 8.85405 21.0678C9.20339 21.2805 9.59405 21.4163 10 21.4662C10.4007 21.4123 10.7855 21.2746 11.1294 21.0621C11.4734 20.8495 11.7686 20.5669 11.9961 20.2327C12.199 19.9557 12.4527 19.7198 12.7436 19.5374C13.1103 19.4983 13.4811 19.5313 13.8351 19.6346C14.2065 19.77 14.6023 19.8254 14.9965 19.797C15.3908 19.7687 15.7746 19.6573 16.1227 19.4701C16.4105 19.1952 16.6371 18.8627 16.7879 18.4943C16.9386 18.1259 17.01 17.7299 16.9974 17.332C17.0092 16.967 17.0877 16.6072 17.2291 16.2705C17.5026 16.0397 17.8136 15.8577 18.1487 15.7322C18.5337 15.6221 18.8912 15.432 19.1977 15.1744C19.5043 14.9167 19.7531 14.5973 19.9279 14.237C19.9954 13.8517 19.9818 13.4565 19.8878 13.0768C19.7938 12.697 19.6216 12.3411 19.3822 12.0317C19.1819 11.7165 19.0425 11.3665 18.971 11ZM18.1113 12.7643C18.2758 13.0633 18.5898 13.6091 18.5374 13.7735C18.4851 13.938 17.9244 14.2071 17.5656 14.3716C16.989 14.5818 16.4747 14.9341 16.0704 15.3958C15.7498 15.9294 15.5746 16.5377 15.562 17.1601C15.5172 17.5339 15.4499 18.1469 15.2929 18.2591C15.1359 18.3712 14.5453 18.2591 14.1865 18.1693C13.5833 17.9939 12.9457 17.9734 12.3325 18.1095C11.7633 18.3499 11.2662 18.7337 10.8896 19.2234C10.6205 19.5225 10.2093 19.971 10 19.971C9.79068 19.971 9.37951 19.5225 9.11037 19.2234C8.74003 18.7367 8.25096 18.3532 7.68996 18.1095C7.47166 18.0443 7.24496 18.0116 7.01714 18.0123C6.61934 18.0273 6.22385 18.0799 5.83595 18.1693C5.47711 18.2441 4.87157 18.3637 4.72953 18.2591C4.58748 18.1544 4.50525 17.5115 4.4604 17.1601C4.44785 16.5377 4.27258 15.9294 3.95204 15.3958C3.54773 14.9341 3.03347 14.5818 2.45687 14.3716C2.09803 14.2071 1.55229 13.9604 1.48501 13.7735C1.41772 13.5866 1.74666 13.0633 1.91113 12.7643C2.26148 12.2376 2.4724 11.6305 2.52415 11C2.46569 10.3675 2.24699 9.76025 1.8887 9.2357C1.72423 8.93667 1.41025 8.39093 1.46258 8.22646C1.51491 8.06199 2.0756 7.79286 2.43444 7.62839C3.01104 7.41819 3.5253 7.06593 3.92961 6.6042C4.25016 6.07056 4.42542 5.46229 4.43797 4.8399C4.48282 4.46611 4.55011 3.85309 4.7071 3.74095C4.86409 3.62881 5.45468 3.74095 5.81352 3.83066C6.41669 4.00606 7.05432 4.02663 7.66754 3.89047C8.23669 3.65014 8.73381 3.26635 9.11037 2.77657C9.37951 2.47753 9.79068 2.02898 10 2.02898C10.2093 2.02898 10.6205 2.47753 10.8896 2.77657C11.26 3.2633 11.749 3.64684 12.31 3.89047C12.9232 4.02663 13.5609 4.00606 14.164 3.83066C14.5216 3.71862 14.8996 3.68797 15.2705 3.74095C15.4275 3.85309 15.4947 4.48854 15.5396 4.8399C15.5522 5.46229 15.7274 6.07056 16.048 6.6042C16.4523 7.06593 16.9665 7.41819 17.5431 7.62839C17.902 7.79286 18.4477 8.03957 18.515 8.22646C18.5823 8.41336 18.2533 8.97405 18.0889 9.2357C17.7385 9.76245 17.5276 10.3695 17.4758 11C17.5343 11.6325 17.753 12.2398 18.1113 12.7643Z" fill="white"/>
-<path d="M12.8331 8.22649L8.87839 12.1887L7.54022 10.843C7.47051 10.7733 7.38776 10.718 7.29669 10.6803C7.20562 10.6426 7.10801 10.6232 7.00943 10.6232C6.91086 10.6232 6.81325 10.6426 6.72217 10.6803C6.6311 10.718 6.54835 10.7733 6.47865 10.843C6.40894 10.9127 6.35365 10.9955 6.31593 11.0866C6.2782 11.1776 6.25879 11.2752 6.25879 11.3738C6.25879 11.4724 6.2782 11.57 6.31593 11.6611C6.35365 11.7522 6.40894 11.8349 6.47865 11.9046L8.34761 13.7736C8.41711 13.8436 8.49979 13.8993 8.59089 13.9372C8.68199 13.9752 8.7797 13.9947 8.87839 13.9947C8.97708 13.9947 9.0748 13.9752 9.1659 13.9372C9.257 13.8993 9.33968 13.8436 9.40918 13.7736L13.8947 9.28806C13.9644 9.21835 14.0197 9.1356 14.0574 9.04453C14.0951 8.95346 14.1145 8.85585 14.1145 8.75727C14.1145 8.6587 14.0951 8.56109 14.0574 8.47001C14.0197 8.37894 13.9644 8.29619 13.8947 8.22649C13.825 8.15678 13.7422 8.10149 13.6512 8.06377C13.5601 8.02605 13.4625 8.00663 13.3639 8.00663C13.2653 8.00663 13.1677 8.02605 13.0766 8.06377C12.9856 8.10149 12.9028 8.15678 12.8331 8.22649Z" fill="#D9D9D9"/>
-</svg>
-`;
-
-const Button = styled.Pressable`
-  margin-top: 28px;
-`;
-
 const Header = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 85%;
   height: 10%;
+`;
+
+const Button = styled.View`
+  margin-top: 28px;
 `;
 
 const Change = styled.Text`
@@ -219,41 +223,32 @@ const EntertainmentText = styled.Text`
   font-size: 16px;
 `;
 
-const ButtonContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  width: 40%;
-  height: 100%;
-  gap: 40px;
-  margin-top: 15px;
-`;
-
-export function FullProfile({ navigation }) {
-  const [text, onChangeText] = React.useState('');
+export function FullEvent({ navigation }) {
+  const [liked, setLiked] = useState(false);
 
   return (
-    <ScrollView
-      contentContainerStyle={{
+    <View
+      style={{
         alignItems: 'center',
         backgroundColor: '#232325',
         width: '100%',
-        height: '1000%',
+        height: '100%',
         flexDirection: 'column',
         justifyContent: 'start',
       }}
     >
       <ImageBackground
-        source={require('../assets/icons/image3.png')}
+        source={require('../assets/icons/rock.png')}
         style={{
           width: '100%',
-          height: '15%',
+          height: '54%',
         }}
       >
         <Header>
           <SvgXml
             style={{
               position: 'absolute',
-              top: '10%',
+              top: '50%',
               left: '5%',
             }}
             xml={back}
@@ -266,298 +261,67 @@ export function FullProfile({ navigation }) {
         style={[
           styles.container,
           {
-            borderTopRightRadius: 20,
-            borderTopLeftRadius: 20,
             zIndex: 1,
             position: 'absolute',
-            top: 180,
-            paddingTop: 50,
+            top: 250,
+            paddingTop: 20,
+            gap: 10,
           },
         ]}
       >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 20,
-            position: 'absolute',
-            top: -50,
-          }}
-        >
-          <SvgXml xml={X} width="60px" height="60px" />
-          <SvgXml xml={like} width="80px" height="80px" />
-          <SvgXml xml={send} width="60px" height="60px" />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '90%',
-            gap: -70,
-          }}
-        >
-          <Name>Самый чудесный , 3</Name>
-          <SvgXml xml={veri} width="30px" height="30px" />
-        </View>
-
-        <Location>В чём секрет кота Бориса?</Location>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: 20,
-            marginTop: 20,
-            width: '90%',
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              gap: 10,
-              borderWidth: 2,
-              borderColor: 'white',
-              borderRadius: 50,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-            }}
-          >
-            <SvgXml xml={oven} width="20px" height="20px" />
-            <Txt style={{ color: 'white' }}>Овен</Txt>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              gap: 10,
-              borderWidth: 2,
-              borderColor: 'white',
-              borderRadius: 50,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-            }}
-          >
-            <SvgXml xml={icon} width="20px" height="20px" />
-            <Txt style={{ color: 'white' }}>Дружба</Txt>
-          </View>
-        </View>
-
-        <Info style={{ width: '90%' }}>
-          <Txt style={{ color: 'white' }}>
-            Свердловская область, Екатеринбург
-          </Txt>
-          <View style={{ flexDirection: 'row', gap: 5 }}>
-            <SvgXml xml={nav} width="20px" height="20px" />
-            <Txt style={{ color: 'white' }}>1 км</Txt>
-          </View>
+        <Info style={{ width: '90%', marginTop: 0 }}>
+          <Location>Рок-концерт</Location>
+          <Location>12+</Location>
+        </Info>
+        <Info style={{ width: '90%', marginTop: 0 }}>
+          <Name>Rock Cats</Name>
+          <Pressable onPress={() => setLiked((isLiked) => !isLiked)}>
+            {/* <SvgXml xml={love} width="30px" height="30px" /> */}
+            <MaterialCommunityIcons
+              name={liked ? 'heart' : 'heart-outline'}
+              size={32}
+              color={liked ? 'white' : 'white'}
+            />
+          </Pressable>
         </Info>
 
+        <Location>21 апреля, Космос</Location>
+
+        <Name style={{ fontSize: 18 }}>О концерте</Name>
         <View
           style={{
-            flexDirection: 'row',
             width: '90%',
-            marginTop: 20,
-            alignItems: 'center',
-            gap: 20,
           }}
         >
-          <SvgXml xml={percentage} width="50px" height="50px" />
-          <Txt style={{ color: 'white' }}>Совместимость</Txt>
-        </View>
-
-        <EntertainmentsContainer style={{ marginTop: 500, gap: 100 }}>
-          <ButtonContainer
-            style={{ width: '80%', flexDirection: 'column', gap: 15 }}
-          >
-            <Entertainments style={{ textAlign: 'center' }}>
-              О себе
-            </Entertainments>
-            <Txt>
-              Кошка или Домашняя кошка (лат. Félis silvéstris cátus) — домашнее
-              животное, млекопитающее семейства кошачьих отряда хищных...
-            </Txt>
-            <View>
-              <Txt>Читать больше</Txt>
-            </View>
+          <Text style={{ color: '#fff', fontSize: 18 }}>
+            Группа Rock Cats выступит на большой сцене с полным составом
+            музыкантов и завораживающим световым шоу. Вас ждёт незабываемое
+            звучание классического рока, мощные гитарные рифы и великолепный
+            вокал. Будет много энергии, страсти и драйва!{' '}
+          </Text>
+          <ButtonContainer style={{ marginBottom: 100 }}>
+            <Button
+              style={{
+                fontSize: '15px',
+                color: '#ffffff',
+                backgroundColor: '#414142',
+                width: '80%',
+                height: 60,
+                borderRadius: 28,
+                paddingBottom: 12,
+                paddingTop: 12,
+                justifyContent: 'center',
+              }}
+              onPress={() => navigation.navigate('Question')}
+            >
+              <Txt style={{ textAlign: 'center', color: '#fff' }}>
+                Позвать собеседника
+              </Txt>
+            </Button>
           </ButtonContainer>
-
-          <View style={{ gap: 20 }}>
-            <Entertainments style={{ textAlign: 'center' }}>
-              Галерея
-            </Entertainments>
-            <Image source={require('../assets/icons/bigpic.png')} />
-          </View>
-
-          <View>
-            <Entertainments style={{ textAlign: 'center' }}>
-              Увлечения
-            </Entertainments>
-            <View style={{ height: '100%', gap: -60 }}>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Музей</Txt>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Языки</Txt>
-                </View>
-              </ButtonContainer>
-            </View>
-          </View>
-          <View>
-            <Entertainments style={{ textAlign: 'center' }}>
-              Любимые мероприятия
-            </Entertainments>
-            <View style={{ height: '100%', gap: -60 }}>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Кино</Txt>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Музыка</Txt>
-                </View>
-              </ButtonContainer>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Опера</Txt>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Балет</Txt>
-                </View>
-              </ButtonContainer>
-            </View>
-          </View>
-          <View style={{ alignItems: 'center' }}>
-            <Entertainments style={{ textAlign: 'center', width: 300 }}>
-              Главные аспекты в отношениях
-            </Entertainments>
-            <View style={{ height: '100%', gap: -60, width: 390 }}>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 50,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Юмор</Txt>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 50,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>
-                    Искренность
-                  </Txt>
-                </View>
-              </ButtonContainer>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 50,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Поддержка</Txt>
-                </View>
-              </ButtonContainer>
-            </View>
-          </View>
-        </EntertainmentsContainer>
+        </View>
       </Main>
-      <Text style={{ fontSize: 96 }}>Scrolling down</Text>
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Text style={{ fontSize: 96 }}>What's the best</Text>
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Text style={{ fontSize: 96 }}>Framework around?</Text>
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Text style={{ fontSize: 80 }}>React Native</Text>
-    </ScrollView>
+    </View>
   );
 }
 

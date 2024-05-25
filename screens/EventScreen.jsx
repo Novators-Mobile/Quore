@@ -9,11 +9,31 @@ import {
   ScrollView,
   Text,
   Image,
+  FlatList,
 } from 'react-native';
-import { SvgXml } from 'react-native-svg';
+import Svg, { SvgXml } from 'react-native-svg';
+
+import { useState, useEffect } from 'react';
+
+import { EventFilter } from '../components/EventFilter';
+
+import { GestureHandlerRootView, Gesture } from 'react-native-gesture-handler';
+
+import {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+  runOnJS,
+} from 'react-native-reanimated';
 
 const rak = `<svg width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M15 5.5C8.125 5.5 2.5 9.975 2.5 15.5C2.5 18.15 4.5625 20.3375 7.2 20.5H7.5C8.82608 20.5 10.0979 19.9732 11.0355 19.0355C11.9732 18.0979 12.5 16.8261 12.5 15.5C12.5 14.1739 11.9732 12.9021 11.0355 11.9645C10.0979 11.0268 8.82608 10.5 7.5 10.5H7.2C9.30484 8.51399 12.1068 7.43631 15 7.5C17.2125 7.475 19.375 8.0875 21.25 9.25L22.8125 7.6875C20.4726 6.22282 17.7603 5.46336 15 5.5ZM7.5 13C8.16304 13 8.79893 13.2634 9.26777 13.7322C9.73661 14.2011 10 14.837 10 15.5C10 16.8875 8.85 18 7.5 18C6.87808 18.0031 6.27733 17.7743 5.81506 17.3583C5.35279 16.9422 5.06218 16.3688 5 15.75V15.25C5.06218 14.6312 5.35279 14.0578 5.81506 13.6417C6.27733 13.2257 6.87808 12.9969 7.5 13ZM22.8 10.5H22.5C21.1739 10.5 19.9021 11.0268 18.9645 11.9645C18.0268 12.9021 17.5 14.1739 17.5 15.5C17.5 16.8261 18.0268 18.0979 18.9645 19.0355C19.9021 19.9732 21.1739 20.5 22.5 20.5H22.8C20.6952 22.486 17.8932 23.5637 15 23.5C12.7875 23.525 10.625 22.9125 8.75 21.75L7.2 23.3C9.5375 24.7625 12.2375 25.5 15 25.5C21.875 25.5 27.5 21.025 27.5 15.5C27.5 12.85 25.4375 10.6625 22.8 10.5ZM22.5 18C21.837 18 21.2011 17.7366 20.7322 17.2678C20.2634 16.7989 20 16.163 20 15.5C20 14.1125 21.15 13 22.5 13C23.1219 12.9969 23.7227 13.2257 24.1849 13.6417C24.6472 14.0578 24.9378 14.6312 25 15.25V15.75C24.9378 16.3688 24.6472 16.9422 24.1849 17.3583C23.7227 17.7743 23.1219 18.0031 22.5 18Z" fill="white"/>
+</svg>
+`;
+
+const Like = `<svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.22659 3.48947C5.54449 3.48947 3.37012 5.64465 3.37012 8.30308C3.37012 13.1167 9.10959 17.4927 12.2001 18.5105C15.2906 17.4927 21.03 13.1167 21.03 8.30308C21.03 5.64465 18.8557 3.48947 16.1736 3.48947C14.5312 3.48947 13.0787 4.29772 12.2001 5.53482C11.7523 4.90257 11.1573 4.38659 10.4657 4.03056C9.774 3.67453 9.00597 3.48893 8.22659 3.48947Z" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
 
@@ -30,7 +50,7 @@ const icon = `<svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns=
 
 const back = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_b_3503_355)">
-<rect width="32" height="32" rx="16" fill="#232325" fill-opacity="0.3"/>
+<rect width="32" height="32" rx="16" fill="#6E6E6E" fill-opacity="0.3"/>
 </g>
 <path d="M18.5999 22.5498L12.3999 15.7549L18.5999 8.95997" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M18.5999 22.5498L12.3999 15.7549L18.5999 8.95997" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -102,20 +122,16 @@ const percentage = `<svg width="40" height="40" viewBox="0 0 40 40" fill="none" 
 </svg>
 `;
 
-const veri = `<svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M18.971 11C19.0516 10.6314 19.2013 10.2813 19.4121 9.96833C19.6515 9.65895 19.8237 9.30299 19.9177 8.92324C20.0117 8.54349 20.0253 8.1483 19.9578 7.76296C19.783 7.40267 19.5342 7.08328 19.2276 6.82565C18.9211 6.56802 18.5636 6.37793 18.1786 6.26779C17.8461 6.15374 17.5352 5.9844 17.259 5.76691C17.1176 5.43017 17.0391 5.07038 17.0273 4.70534C17.0399 4.30751 16.9685 3.91149 16.8178 3.5431C16.6671 3.17471 16.4404 2.8422 16.1526 2.56724C15.8045 2.38011 15.4207 2.26871 15.0264 2.24037C14.6322 2.21202 14.2364 2.26737 13.865 2.40278C13.511 2.50608 13.1402 2.53909 12.7735 2.49996C12.4826 2.31759 12.2289 2.08167 12.026 1.80471C11.7991 1.46002 11.5008 1.16815 11.1512 0.948872C10.8017 0.729595 10.4091 0.588043 10 0.533813C9.59932 0.5877 9.21448 0.725395 8.87057 0.937928C8.52665 1.15046 8.23136 1.43307 8.00395 1.76733C7.80098 2.04429 7.5473 2.28021 7.25636 2.46258C6.88968 2.50171 6.51889 2.4687 6.16489 2.3654C5.79354 2.22999 5.39775 2.17465 5.0035 2.20299C4.60924 2.23134 4.22544 2.34273 3.87728 2.52987C3.58407 2.80217 3.35187 3.13349 3.19595 3.50201C3.04004 3.87053 2.96395 4.2679 2.9727 4.66796C2.96555 5.04562 2.88692 5.41852 2.74095 5.76691C2.46751 5.99764 2.15648 6.17971 1.82142 6.30517C1.43641 6.41531 1.07894 6.6054 0.772361 6.86303C0.465779 7.12066 0.216969 7.44004 0.0421685 7.80034C-0.0253397 8.18568 -0.0116703 8.58086 0.0823025 8.96062C0.176275 9.34037 0.348482 9.69633 0.587905 10.0057C0.794479 10.3074 0.943977 10.6444 1.02898 11C0.948365 11.3686 0.798706 11.7187 0.587905 12.0317C0.348482 12.3411 0.176275 12.697 0.0823025 13.0768C-0.0116703 13.4565 -0.0253397 13.8517 0.0421685 14.237C0.216969 14.5973 0.465779 14.9167 0.772361 15.1744C1.07894 15.432 1.43641 15.6221 1.82142 15.7322C2.15648 15.8577 2.46751 16.0397 2.74095 16.2705C2.88238 16.6072 2.96093 16.967 2.9727 17.332C2.96014 17.7299 3.03153 18.1259 3.18224 18.4943C3.33295 18.8627 3.55958 19.1952 3.84738 19.4701C4.19554 19.6573 4.57934 19.7687 4.97359 19.797C5.36784 19.8254 5.76363 19.77 6.13499 19.6346C6.48898 19.5313 6.85978 19.4983 7.22646 19.5374C7.5174 19.7198 7.77108 19.9557 7.97404 20.2327C8.20471 20.5704 8.50471 20.8551 8.85405 21.0678C9.20339 21.2805 9.59405 21.4163 10 21.4662C10.4007 21.4123 10.7855 21.2746 11.1294 21.0621C11.4734 20.8495 11.7686 20.5669 11.9961 20.2327C12.199 19.9557 12.4527 19.7198 12.7436 19.5374C13.1103 19.4983 13.4811 19.5313 13.8351 19.6346C14.2065 19.77 14.6023 19.8254 14.9965 19.797C15.3908 19.7687 15.7746 19.6573 16.1227 19.4701C16.4105 19.1952 16.6371 18.8627 16.7879 18.4943C16.9386 18.1259 17.01 17.7299 16.9974 17.332C17.0092 16.967 17.0877 16.6072 17.2291 16.2705C17.5026 16.0397 17.8136 15.8577 18.1487 15.7322C18.5337 15.6221 18.8912 15.432 19.1977 15.1744C19.5043 14.9167 19.7531 14.5973 19.9279 14.237C19.9954 13.8517 19.9818 13.4565 19.8878 13.0768C19.7938 12.697 19.6216 12.3411 19.3822 12.0317C19.1819 11.7165 19.0425 11.3665 18.971 11ZM18.1113 12.7643C18.2758 13.0633 18.5898 13.6091 18.5374 13.7735C18.4851 13.938 17.9244 14.2071 17.5656 14.3716C16.989 14.5818 16.4747 14.9341 16.0704 15.3958C15.7498 15.9294 15.5746 16.5377 15.562 17.1601C15.5172 17.5339 15.4499 18.1469 15.2929 18.2591C15.1359 18.3712 14.5453 18.2591 14.1865 18.1693C13.5833 17.9939 12.9457 17.9734 12.3325 18.1095C11.7633 18.3499 11.2662 18.7337 10.8896 19.2234C10.6205 19.5225 10.2093 19.971 10 19.971C9.79068 19.971 9.37951 19.5225 9.11037 19.2234C8.74003 18.7367 8.25096 18.3532 7.68996 18.1095C7.47166 18.0443 7.24496 18.0116 7.01714 18.0123C6.61934 18.0273 6.22385 18.0799 5.83595 18.1693C5.47711 18.2441 4.87157 18.3637 4.72953 18.2591C4.58748 18.1544 4.50525 17.5115 4.4604 17.1601C4.44785 16.5377 4.27258 15.9294 3.95204 15.3958C3.54773 14.9341 3.03347 14.5818 2.45687 14.3716C2.09803 14.2071 1.55229 13.9604 1.48501 13.7735C1.41772 13.5866 1.74666 13.0633 1.91113 12.7643C2.26148 12.2376 2.4724 11.6305 2.52415 11C2.46569 10.3675 2.24699 9.76025 1.8887 9.2357C1.72423 8.93667 1.41025 8.39093 1.46258 8.22646C1.51491 8.06199 2.0756 7.79286 2.43444 7.62839C3.01104 7.41819 3.5253 7.06593 3.92961 6.6042C4.25016 6.07056 4.42542 5.46229 4.43797 4.8399C4.48282 4.46611 4.55011 3.85309 4.7071 3.74095C4.86409 3.62881 5.45468 3.74095 5.81352 3.83066C6.41669 4.00606 7.05432 4.02663 7.66754 3.89047C8.23669 3.65014 8.73381 3.26635 9.11037 2.77657C9.37951 2.47753 9.79068 2.02898 10 2.02898C10.2093 2.02898 10.6205 2.47753 10.8896 2.77657C11.26 3.2633 11.749 3.64684 12.31 3.89047C12.9232 4.02663 13.5609 4.00606 14.164 3.83066C14.5216 3.71862 14.8996 3.68797 15.2705 3.74095C15.4275 3.85309 15.4947 4.48854 15.5396 4.8399C15.5522 5.46229 15.7274 6.07056 16.048 6.6042C16.4523 7.06593 16.9665 7.41819 17.5431 7.62839C17.902 7.79286 18.4477 8.03957 18.515 8.22646C18.5823 8.41336 18.2533 8.97405 18.0889 9.2357C17.7385 9.76245 17.5276 10.3695 17.4758 11C17.5343 11.6325 17.753 12.2398 18.1113 12.7643Z" fill="white"/>
-<path d="M12.8331 8.22649L8.87839 12.1887L7.54022 10.843C7.47051 10.7733 7.38776 10.718 7.29669 10.6803C7.20562 10.6426 7.10801 10.6232 7.00943 10.6232C6.91086 10.6232 6.81325 10.6426 6.72217 10.6803C6.6311 10.718 6.54835 10.7733 6.47865 10.843C6.40894 10.9127 6.35365 10.9955 6.31593 11.0866C6.2782 11.1776 6.25879 11.2752 6.25879 11.3738C6.25879 11.4724 6.2782 11.57 6.31593 11.6611C6.35365 11.7522 6.40894 11.8349 6.47865 11.9046L8.34761 13.7736C8.41711 13.8436 8.49979 13.8993 8.59089 13.9372C8.68199 13.9752 8.7797 13.9947 8.87839 13.9947C8.97708 13.9947 9.0748 13.9752 9.1659 13.9372C9.257 13.8993 9.33968 13.8436 9.40918 13.7736L13.8947 9.28806C13.9644 9.21835 14.0197 9.1356 14.0574 9.04453C14.0951 8.95346 14.1145 8.85585 14.1145 8.75727C14.1145 8.6587 14.0951 8.56109 14.0574 8.47001C14.0197 8.37894 13.9644 8.29619 13.8947 8.22649C13.825 8.15678 13.7422 8.10149 13.6512 8.06377C13.5601 8.02605 13.4625 8.00663 13.3639 8.00663C13.2653 8.00663 13.1677 8.02605 13.0766 8.06377C12.9856 8.10149 12.9028 8.15678 12.8331 8.22649Z" fill="#D9D9D9"/>
-</svg>
-`;
+const filter = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="20" viewBox="0 0 17 20" fill="none">
+<path d="M5.3125 2.1276C5.03071 2.1276 4.76046 2.23955 4.5612 2.4388C4.36194 2.63806 4.25 2.90831 4.25 3.1901C4.25 3.4719 4.36194 3.74215 4.5612 3.9414C4.76046 4.14066 5.03071 4.2526 5.3125 4.2526C5.59429 4.2526 5.86454 4.14066 6.0638 3.9414C6.26306 3.74215 6.375 3.4719 6.375 3.1901C6.375 2.90831 6.26306 2.63806 6.0638 2.4388C5.86454 2.23955 5.59429 2.1276 5.3125 2.1276ZM2.30562 2.1276C2.52514 1.50547 2.93222 0.966752 3.47076 0.585692C4.0093 0.204633 4.65278 0 5.3125 0C5.97222 0 6.6157 0.204633 7.15424 0.585692C7.69278 0.966752 8.09986 1.50547 8.31938 2.1276H15.9375C16.2193 2.1276 16.4895 2.23955 16.6888 2.4388C16.8881 2.63806 17 2.90831 17 3.1901C17 3.4719 16.8881 3.74215 16.6888 3.9414C16.4895 4.14066 16.2193 4.2526 15.9375 4.2526H8.31938C8.09986 4.87473 7.69278 5.41346 7.15424 5.79452C6.6157 6.17557 5.97222 6.38021 5.3125 6.38021C4.65278 6.38021 4.0093 6.17557 3.47076 5.79452C2.93222 5.41346 2.52514 4.87473 2.30562 4.2526H1.0625C0.780707 4.2526 0.510457 4.14066 0.311199 3.9414C0.111942 3.74215 0 3.4719 0 3.1901C0 2.90831 0.111942 2.63806 0.311199 2.4388C0.510457 2.23955 0.780707 2.1276 1.0625 2.1276H2.30562ZM11.6875 8.5026C11.4057 8.5026 11.1355 8.61454 10.9362 8.8138C10.7369 9.01306 10.625 9.28331 10.625 9.5651C10.625 9.8469 10.7369 10.1171 10.9362 10.3164C11.1355 10.5157 11.4057 10.6276 11.6875 10.6276C11.9693 10.6276 12.2395 10.5157 12.4388 10.3164C12.6381 10.1171 12.75 9.8469 12.75 9.5651C12.75 9.28331 12.6381 9.01306 12.4388 8.8138C12.2395 8.61454 11.9693 8.5026 11.6875 8.5026ZM8.68062 8.5026C8.90014 7.88048 9.30722 7.34175 9.84576 6.96069C10.3843 6.57963 11.0278 6.375 11.6875 6.375C12.3472 6.375 12.9907 6.57963 13.5292 6.96069C14.0678 7.34175 14.4749 7.88048 14.6944 8.5026H15.9375C16.2193 8.5026 16.4895 8.61454 16.6888 8.8138C16.8881 9.01306 17 9.28331 17 9.5651C17 9.8469 16.8881 10.1171 16.6888 10.3164C16.4895 10.5157 16.2193 10.6276 15.9375 10.6276H14.6944C14.4749 11.2497 14.0678 11.7885 13.5292 12.1695C12.9907 12.5506 12.3472 12.7552 11.6875 12.7552C11.0278 12.7552 10.3843 12.5506 9.84576 12.1695C9.30722 11.7885 8.90014 11.2497 8.68062 10.6276H1.0625C0.780707 10.6276 0.510457 10.5157 0.311199 10.3164C0.111942 10.1171 0 9.8469 0 9.5651C0 9.28331 0.111942 9.01306 0.311199 8.8138C0.510457 8.61454 0.780707 8.5026 1.0625 8.5026H8.68062ZM5.3125 14.8776C5.03071 14.8776 4.76046 14.9895 4.5612 15.1888C4.36194 15.3881 4.25 15.6583 4.25 15.9401C4.25 16.2219 4.36194 16.4921 4.5612 16.6914C4.76046 16.8907 5.03071 17.0026 5.3125 17.0026C5.59429 17.0026 5.86454 16.8907 6.0638 16.6914C6.26306 16.4921 6.375 16.2219 6.375 15.9401C6.375 15.6583 6.26306 15.3881 6.0638 15.1888C5.86454 14.9895 5.59429 14.8776 5.3125 14.8776ZM2.30562 14.8776C2.52514 14.2555 2.93222 13.7168 3.47076 13.3357C4.0093 12.9546 4.65278 12.75 5.3125 12.75C5.97222 12.75 6.6157 12.9546 7.15424 13.3357C7.69278 13.7168 8.09986 14.2555 8.31938 14.8776H15.9375C16.2193 14.8776 16.4895 14.9895 16.6888 15.1888C16.8881 15.3881 17 15.6583 17 15.9401C17 16.2219 16.8881 16.4921 16.6888 16.6914C16.4895 16.8907 16.2193 17.0026 15.9375 17.0026H8.31938C8.09986 17.6247 7.69278 18.1635 7.15424 18.5445C6.6157 18.9256 5.97222 19.1302 5.3125 19.1302C4.65278 19.1302 4.0093 18.9256 3.47076 18.5445C2.93222 18.1635 2.52514 17.6247 2.30562 17.0026H1.0625C0.780707 17.0026 0.510457 16.8907 0.311199 16.6914C0.111942 16.4921 0 16.2219 0 15.9401C0 15.6583 0.111942 15.3881 0.311199 15.1888C0.510457 14.9895 0.780707 14.8776 1.0625 14.8776H2.30562Z" fill="white"/>
+</svg>`;
 
-const Button = styled.Pressable`
-  margin-top: 28px;
-`;
+const Button = styled.Pressable``;
 
 const Header = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 20px;
   width: 85%;
   height: 10%;
 `;
@@ -127,8 +143,7 @@ const Change = styled.Text`
 `;
 
 const Main = styled.View`
-  align-items: center;
-  width: 90%;
+  width: 100%;
 `;
 
 const Img = styled.Image`
@@ -193,6 +208,12 @@ export const Input = styled.TextInput`
   color: #ffffff;
 `;
 
+const Title = styled.Text`
+  color: #ffffff;
+  font-family: ubuntu-regular;
+  font-size: 24px;
+`;
+
 const EntertainmentsContainer = styled.View`
   margin-top: 125px;
   height: 1%;
@@ -228,8 +249,34 @@ const ButtonContainer = styled.View`
   margin-top: 15px;
 `;
 
-export function FullProfile({ navigation }) {
-  const [text, onChangeText] = React.useState('');
+export function EventScreen({ navigation }) {
+  const offset = useSharedValue(0);
+  const [isOpen, setOpen] = useState(false);
+
+  const toggleSheet = () => {
+    setOpen(!isOpen);
+    offset.value = 0;
+  };
+
+  const pan = Gesture.Pan()
+    .onChange((event) => {
+      const offsetDelta = event.changeY + offset.value;
+      const clamp = Math.max(-20, offsetDelta);
+      offset.value = offsetDelta > 0 ? offsetDelta : withSpring(clamp);
+    })
+    .onFinalize(() => {
+      if (offset.value < 500 / 3) {
+        offset.value = withSpring(0);
+      } else {
+        offset.value = withTiming(500, {}, () => {
+          runOnJS(toggleSheet)();
+        });
+      }
+    });
+
+  const translateY = useAnimatedStyle(() => ({
+    transform: [{ translateY: offset.value }],
+  }));
 
   return (
     <ScrollView
@@ -237,326 +284,68 @@ export function FullProfile({ navigation }) {
         alignItems: 'center',
         backgroundColor: '#232325',
         width: '100%',
-        height: '1000%',
+        height: '120%',
         flexDirection: 'column',
-        justifyContent: 'start',
       }}
     >
-      <ImageBackground
-        source={require('../assets/icons/image3.png')}
-        style={{
-          width: '100%',
-          height: '15%',
-        }}
-      >
-        <Header>
-          <SvgXml
-            style={{
-              position: 'absolute',
-              top: '10%',
-              left: '5%',
-            }}
-            xml={back}
-            width="40px"
-            height="40px"
+      <Header style={{ flexDirection: 'row', marginTop: 50 }}>
+        <Svg height="100%" width="20%" viewBox="0 0 100 100">
+          <SvgXml xml={back} width="40px" height="40px" />
+        </Svg>
+
+        <Title style={{ width: '60%' }}>Совпадающие мероприятия</Title>
+
+        <Button onPress={toggleSheet}>
+          <Svg height="100%" width="70%" viewBox="0 0 100 100">
+            <SvgXml xml={filter} width="60px" height="60px" />
+          </Svg>
+        </Button>
+      </Header>
+
+      <Main>
+        <Title style={{ fontSize: 20, marginLeft: 20, marginBottom: 20 }}>
+          Концерты
+        </Title>
+        <View style={{ width: '200%', height: '48%', flexDirection: 'row' }}>
+          <Image
+            style={{ width: '39%', height: '60%', marginLeft: 20 }}
+            source={require('../assets/icons/Event.png')}
           />
-        </Header>
-      </ImageBackground>
-      <Main
-        style={[
-          styles.container,
-          {
-            borderTopRightRadius: 20,
-            borderTopLeftRadius: 20,
-            zIndex: 1,
-            position: 'absolute',
-            top: 180,
-            paddingTop: 50,
-          },
-        ]}
-      >
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 20,
-            position: 'absolute',
-            top: -50,
-          }}
-        >
-          <SvgXml xml={X} width="60px" height="60px" />
-          <SvgXml xml={like} width="80px" height="80px" />
-          <SvgXml xml={send} width="60px" height="60px" />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '90%',
-            gap: -70,
-          }}
-        >
-          <Name>Самый чудесный , 3</Name>
-          <SvgXml xml={veri} width="30px" height="30px" />
+          <Image
+            style={{ width: '39%', height: '60%', marginLeft: 20 }}
+            source={require('../assets/icons/Event3.png')}
+          />
         </View>
 
-        <Location>В чём секрет кота Бориса?</Location>
-
-        <View
+        <Title
           style={{
-            flexDirection: 'row',
-            gap: 20,
-            marginTop: 20,
-            width: '90%',
+            fontSize: 20,
+            marginLeft: 20,
+            marginBottom: 20,
+            marginTop: -140,
           }}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              gap: 10,
-              borderWidth: 2,
-              borderColor: 'white',
-              borderRadius: 50,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-            }}
-          >
-            <SvgXml xml={oven} width="20px" height="20px" />
-            <Txt style={{ color: 'white' }}>Овен</Txt>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              gap: 10,
-              borderWidth: 2,
-              borderColor: 'white',
-              borderRadius: 50,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-            }}
-          >
-            <SvgXml xml={icon} width="20px" height="20px" />
-            <Txt style={{ color: 'white' }}>Дружба</Txt>
-          </View>
+          Кино
+        </Title>
+        <View style={{ width: '200%', height: '48%', flexDirection: 'row' }}>
+          <Image
+            style={{ width: '39%', height: '60%', marginLeft: 20 }}
+            source={require('../assets/icons/Event3.png')}
+          />
+          <Image
+            style={{ width: '39%', height: '60%', marginLeft: 20 }}
+            source={require('../assets/icons/Event.png')}
+          />
         </View>
-
-        <Info style={{ width: '90%' }}>
-          <Txt style={{ color: 'white' }}>
-            Свердловская область, Екатеринбург
-          </Txt>
-          <View style={{ flexDirection: 'row', gap: 5 }}>
-            <SvgXml xml={nav} width="20px" height="20px" />
-            <Txt style={{ color: 'white' }}>1 км</Txt>
-          </View>
-        </Info>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '90%',
-            marginTop: 20,
-            alignItems: 'center',
-            gap: 20,
-          }}
-        >
-          <SvgXml xml={percentage} width="50px" height="50px" />
-          <Txt style={{ color: 'white' }}>Совместимость</Txt>
-        </View>
-
-        <EntertainmentsContainer style={{ marginTop: 500, gap: 100 }}>
-          <ButtonContainer
-            style={{ width: '80%', flexDirection: 'column', gap: 15 }}
-          >
-            <Entertainments style={{ textAlign: 'center' }}>
-              О себе
-            </Entertainments>
-            <Txt>
-              Кошка или Домашняя кошка (лат. Félis silvéstris cátus) — домашнее
-              животное, млекопитающее семейства кошачьих отряда хищных...
-            </Txt>
-            <View>
-              <Txt>Читать больше</Txt>
-            </View>
-          </ButtonContainer>
-
-          <View style={{ gap: 20 }}>
-            <Entertainments style={{ textAlign: 'center' }}>
-              Галерея
-            </Entertainments>
-            <Image source={require('../assets/icons/bigpic.png')} />
-          </View>
-
-          <View>
-            <Entertainments style={{ textAlign: 'center' }}>
-              Увлечения
-            </Entertainments>
-            <View style={{ height: '100%', gap: -60 }}>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Музей</Txt>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Языки</Txt>
-                </View>
-              </ButtonContainer>
-            </View>
-          </View>
-          <View>
-            <Entertainments style={{ textAlign: 'center' }}>
-              Любимые мероприятия
-            </Entertainments>
-            <View style={{ height: '100%', gap: -60 }}>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Кино</Txt>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Музыка</Txt>
-                </View>
-              </ButtonContainer>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Опера</Txt>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 60,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Балет</Txt>
-                </View>
-              </ButtonContainer>
-            </View>
-          </View>
-          <View style={{ alignItems: 'center' }}>
-            <Entertainments style={{ textAlign: 'center', width: 300 }}>
-              Главные аспекты в отношениях
-            </Entertainments>
-            <View style={{ height: '100%', gap: -60, width: 390 }}>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 50,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Юмор</Txt>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 50,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>
-                    Искренность
-                  </Txt>
-                </View>
-              </ButtonContainer>
-              <ButtonContainer>
-                <View
-                  style={{
-                    borderWidth: 2,
-                    borderColor: 'white',
-                    borderRadius: 50,
-                    paddingHorizontal: 50,
-                    height: '40%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Txt style={{ width: '100%', color: 'white' }}>Поддержка</Txt>
-                </View>
-              </ButtonContainer>
-            </View>
-          </View>
-        </EntertainmentsContainer>
       </Main>
-      <Text style={{ fontSize: 96 }}>Scrolling down</Text>
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Text style={{ fontSize: 96 }}>What's the best</Text>
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Text style={{ fontSize: 96 }}>Framework around?</Text>
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Image source={require('../assets/icons/image3.png')} />
-      <Text style={{ fontSize: 80 }}>React Native</Text>
+
+      {isOpen && (
+        <EventFilter
+          toggleSheet={toggleSheet}
+          pan={pan}
+          translateY={translateY}
+        />
+      )}
     </ScrollView>
   );
 }

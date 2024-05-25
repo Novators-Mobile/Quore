@@ -30,6 +30,10 @@ import { Content } from '../screens/Content';
 import { Zodiac } from '../screens/Zodiac';
 import { Match } from '../screens/Match';
 import { FullProfile } from '../screens/FullProfile';
+import { EventScreen } from '../screens/EventScreen';
+import { FullEvent } from '../screens/FullEvent';
+import { PsyTest } from '../screens/PsyTest';
+import { Questions } from '../screens/Questions';
 
 const Drawer = createDrawerNavigator();
 
@@ -244,7 +248,7 @@ const SideBar = () => {
           }}
           component={Zodiac}
         />
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="Match"
           options={{
             headerShown: false,
@@ -255,6 +259,31 @@ const SideBar = () => {
             ),
           }}
           component={Match}
+        /> */}
+
+        <Drawer.Screen
+          name="EventScreen"
+          options={{
+            headerShown: false,
+            drawerLabel: 'EventScreen',
+            title: 'EventScreen',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={EventScreen}
+        />
+        <Drawer.Screen
+          name="FullEvent"
+          options={{
+            headerShown: false,
+            drawerLabel: 'FullEvent',
+            title: 'FullEvent',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={FullEvent}
         />
         <Drawer.Screen
           name="FullProfile"
@@ -267,6 +296,31 @@ const SideBar = () => {
             ),
           }}
           component={FullProfile}
+        />
+
+        <Drawer.Screen
+          name="Questions"
+          options={{
+            headerShown: false,
+            drawerLabel: 'Questions',
+            title: 'Questions',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={Questions}
+        />
+        <Drawer.Screen
+          name="PsyTest"
+          options={{
+            headerShown: false,
+            drawerLabel: 'PsyTest',
+            title: 'PsyTest',
+            drawerIcon: () => (
+              <SvgXml xml={settings} width="25px" height="25px" />
+            ),
+          }}
+          component={PsyTest}
         />
       </Drawer.Navigator>
     </NavigationContainer>
