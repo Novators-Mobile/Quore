@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DatingApp",
-    "slug": "DatingApp",
+    "name": "Quore",
+    "slug": "Quore",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.timurzinatulin.DatingApp"
+      "package": "ru.novatorsmobile.quore"
     },
     "web": {
       "favicon": "./assets/favicon.png"
