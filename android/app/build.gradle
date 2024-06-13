@@ -82,9 +82,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.timurzinatulin.DatingApp'
+    namespace 'ru.novatorsmobile.quore'
     defaultConfig {
-        applicationId 'com.timurzinatulin.DatingApp'
+        applicationId 'ru.novatorsmobile.quore'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

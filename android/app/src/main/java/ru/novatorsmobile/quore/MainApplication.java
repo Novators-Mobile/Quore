@@ -1,4 +1,4 @@
-package com.timurzinatulin.DatingApp;
+package ru.novatorsmobile.quore;
 
 import android.app.Application;
 import android.content.res.Configuration;
